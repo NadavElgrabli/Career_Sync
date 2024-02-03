@@ -10,6 +10,7 @@ import { ChatBtnComponent } from '../components/chat-btn/chat-btn.component';
 import { CareersPageComponent } from '../components/careers-page/careers-page.component';
 import { AboutComponent } from '../components/about/about.component';
 import { ChatComponent } from '../components/chat/chat.component';
+import { SignInComponent } from '../components/sign-in/sign-in.component';
 
 @NgModule({
   declarations: [
@@ -21,6 +22,7 @@ import { ChatComponent } from '../components/chat/chat.component';
     CareersPageComponent,
     AboutComponent,
     ChatComponent,
+    SignInComponent,
   ],
   imports: [
     BrowserModule,
