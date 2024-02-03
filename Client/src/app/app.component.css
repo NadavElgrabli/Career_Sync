@@ -1,0 +1,10 @@
+/* Remove margin from all elements */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  .vsc-initialized{
+    margin: 0;
+  }
