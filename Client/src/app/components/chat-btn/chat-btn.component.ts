@@ -6,5 +6,5 @@ import { Component } from '@angular/core';
   styleUrls: ['./chat-btn.component.css']
 })
 export class ChatBtnComponent {
-
+  showChat : boolean = false;
 }
