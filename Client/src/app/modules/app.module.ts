@@ -1,5 +1,9 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
+import { MatStepperModule } from '@angular/material/stepper';
+import { MatInputModule } from '@angular/material/input';
+import { MatButtonModule } from '@angular/material/button';
+import { MatFormFieldModule } from '@angular/material/form-field';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from '../app.component';
@@ -11,6 +15,9 @@ import { CareersPageComponent } from '../components/careers-page/careers-page.co
 import { AboutComponent } from '../components/about/about.component';
 import { ChatComponent } from '../components/chat/chat.component';
 import { SignInComponent } from '../components/sign-in/sign-in.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { MatIconModule } from '@angular/material/icon';
+import { ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -26,7 +33,14 @@ import { SignInComponent } from '../components/sign-in/sign-in.component';
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule
+    AppRoutingModule,
+    MatStepperModule,
+    MatInputModule,
+    MatButtonModule,
+    MatFormFieldModule,
+    BrowserAnimationsModule,
+    MatIconModule,
+    ReactiveFormsModule,
   ],
   providers: [],
   bootstrap: [AppComponent]
