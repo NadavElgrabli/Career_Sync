@@ -1,1 +1,15 @@
-<p>careers-page works!</p>
+<div class="search-container">
+    <div class="search">
+        <img src="../../../assets/images/search.svg" alt="search">
+        <input type="text" placeholder="Find your dream job...">
+    </div>
+</div>
+
+<div class="cards-container">
+    <div>
+        <app-job-card></app-job-card>
+    </div>
+</div>
+
+<!-- change the numbers -->
+<mat-paginator class="btn" [length]="10" [pageSize]="10" aria-label="Select page"></mat-paginator>

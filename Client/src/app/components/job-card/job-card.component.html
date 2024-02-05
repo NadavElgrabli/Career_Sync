@@ -1,1 +1,22 @@
-<p>job-card works!</p>
+<div class="tp-box" (click)="toggleFlip()" [@flipState]="flip">
+    <div class="tp-box__side tp-box__front">
+        <mat-card class="mentor-card">
+            <mat-card-header class="card-header">
+                <mat-card-title class="title">job title</mat-card-title>
+            </mat-card-header>
+            <div class="card-content">
+                <mat-card-title class="title">jfsfs</mat-card-title>
+            </div>
+        </mat-card>
+    </div>
+    <div class="tp-box__side tp-box__back">
+        <mat-card class="mentor-card">
+            <mat-card-header class="card-header">
+                <mat-card-title>fsdfs</mat-card-title>
+            </mat-card-header>
+            <div class="card-content">
+                <mat-card-subtitle>dfsdf</mat-card-subtitle>
+            </div>
+        </mat-card>
+    </div>
+</div>

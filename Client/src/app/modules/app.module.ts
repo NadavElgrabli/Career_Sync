@@ -4,6 +4,8 @@ import { MatStepperModule } from '@angular/material/stepper';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatCardModule } from '@angular/material/card';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from '../app.component';
@@ -18,6 +20,8 @@ import { SignInComponent } from '../components/sign-in/sign-in.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatIconModule } from '@angular/material/icon';
 import { ReactiveFormsModule } from '@angular/forms';
+import { JobCardComponent } from '../components/job-card/job-card.component';
+
 
 @NgModule({
   declarations: [
@@ -30,6 +34,7 @@ import { ReactiveFormsModule } from '@angular/forms';
     AboutComponent,
     ChatComponent,
     SignInComponent,
+    JobCardComponent,
   ],
   imports: [
     BrowserModule,
@@ -41,6 +46,8 @@ import { ReactiveFormsModule } from '@angular/forms';
     BrowserAnimationsModule,
     MatIconModule,
     ReactiveFormsModule,
+    MatPaginatorModule,
+    MatCardModule,
   ],
   providers: [],
   bootstrap: [AppComponent]
