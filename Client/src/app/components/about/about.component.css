@@ -1,3 +1,13 @@
-.about{
-    display: flex;
+.about {
+    text-align: center;
+
+    .title {
+        margin-top: 8px;
+    }
+
+    .text {
+        margin: 0 auto;
+        max-width: 920px;
+        font-size: 16px;
+    }
 }
