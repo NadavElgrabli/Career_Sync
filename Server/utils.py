@@ -19,9 +19,14 @@ def insert_new_user(data):
         work_preference = data.get("work_preference", None)
         experience = data.get("experience", None)
         degree = data.get("degree", None)
+        skills = data.get("skills", None)
+        first_name = data.get("firstName", None)
+        last_name = data.get("lastName", None)
 
         
         user = {
+            "first_name": first_name,
+            "last_name": last_name,
             "username": username,
             "password": hashed_password,
             "job": job,
@@ -29,7 +34,8 @@ def insert_new_user(data):
             "full_job": full_job,
             "work_preference": work_preference,
             "experience": experience,
-            "degree": degree
+            "degree": degree,
+            "skills": skills,
         }
         
         return insert_one(db.users, user)
