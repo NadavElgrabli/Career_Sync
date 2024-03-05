@@ -3,6 +3,7 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { AppComponent } from 'src/app/app.component';
 import { HttpService } from 'src/app/services/http.service';
 import { User } from 'src/app/user';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-sign-up',
@@ -56,7 +57,8 @@ export class SignUpComponent {
   constructor(
     private formBuilder: FormBuilder,
     private appComponentParent: AppComponent,
-    private httpService: HttpService
+    private httpService: HttpService,
+    private router: Router
   ) {
     this.appComponentParent.displayNavbar = false;
 
@@ -91,9 +93,7 @@ export class SignUpComponent {
       skills: this.selectedSkills,
     };
     this.httpService.post<User>('signup', this.user).subscribe((res) => {
-      if (res) {
-        console.log(res);
-      }
+      this.router.navigate(['/']);
     });
   }
 }

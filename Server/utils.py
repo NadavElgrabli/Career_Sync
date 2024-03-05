@@ -53,7 +53,10 @@ def get_user_data(user):
         "full_job": user.get("full_job"),
         "work_preference": user.get("work_preference"),
         "experience": user.get("experience"),
-        "degree": user.get("degree")
+        "degree": user.get("degree"),
+        "skills": user.get("skills"),
+        "firstName": user.get("first_name"),
+        "lastName": user.get("last_name"),
     }
 def get_user(username):
     try:

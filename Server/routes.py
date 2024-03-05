@@ -12,8 +12,10 @@ def handle_get():
 @app.route('/signup', methods=['POST'])
 def handle_post():
     data = request.json
-    if insert_new_user(data):
-        return 'User successfully added to the database', 200
+    newUser = insert_new_user(data)
+    if newUser:
+        print(newUser)
+        return jsonify(data), 200
     else:
         return 'Failed to add user to the database', 500
 
