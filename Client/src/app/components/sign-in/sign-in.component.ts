@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 import { NavBarComponent } from '../nav-bar/nav-bar.component';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { HttpService } from 'src/app/services/http.service';
+import { User } from 'src/app/user';
 
 @Component({
   selector: 'app-sign-in',
@@ -12,11 +14,19 @@ export class SignInComponent {
   signInForm: FormGroup;
   hide = true;
 
-  constructor(private parent: NavBarComponent, private formBuilder: FormBuilder){
+  constructor(private parent: NavBarComponent, private formBuilder: FormBuilder,private httpService: HttpService) {
     this.signInForm = this.formBuilder.group({
       username: ['', Validators.required],
       password: ['', [Validators.required, Validators.minLength(6)]],
     });
+  }
+
+  login(){
+    this.httpService.post<any>('login',this.signInForm.value).subscribe(res => {
+      localStorage.setItem('token', res.token);
+      localStorage.setItem('user', JSON.stringify(res.user));
+      this.isSignInVisible()
+    })
   }
   
   isSignInVisible()

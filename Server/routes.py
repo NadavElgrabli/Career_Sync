@@ -1,8 +1,9 @@
 from flask import jsonify, request, Blueprint,session
 from token_utils import generate_token
 from utils import insert_new_user, login_user
-
+from flask_cors import CORS
 app = Blueprint('routes', __name__)
+CORS(app)
 
 @app.route('/', methods=['GET'])
 def handle_get():
@@ -20,9 +21,10 @@ def handle_post():
 def login():
     try:
         data = request.json
+        print(data)
         username = data.get("username")
         password = data.get("password")
-
+        
         user = login_user(username, password)
         if user:
             token = generate_token(username)
