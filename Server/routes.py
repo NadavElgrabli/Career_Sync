@@ -29,7 +29,9 @@ def login():
         
         user = login_user(username, password)
         if user:
+            print("before token")
             token = generate_token(username)
+            print("after token")
             if token:
                 session['logged_in'] = True
                 return jsonify({

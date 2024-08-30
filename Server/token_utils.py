@@ -1,11 +1,12 @@
 import jwt
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 from config import JWT_SECRET_KEY
 
 def generate_token(username):
+    print(username)
     token = jwt.encode({
         'username': username,
-        'exp': datetime.utcnow() + timedelta(minutes=10)},
+        'exp': datetime.now(timezone.utc) + timedelta(minutes=10)},
         JWT_SECRET_KEY,
         algorithm='HS256')
     return token

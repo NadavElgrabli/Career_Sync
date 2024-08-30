@@ -3,42 +3,31 @@ from db import db,insert_one
 
 bcrypt = Bcrypt()
 
+def _get_user_data(data):
+    return {
+        "first_name": data.get("firstName", None),
+        "last_name": data.get("lastName", None),
+        "username": data.get("username"),
+        "password": data.get("password"),
+        "job": data.get("job", None),
+        "location": data.get("location", None),
+        "full_job": data.get("full_job", None),
+        "work_preference": data.get("work_preference", None),
+        "experience": data.get("experience", None),
+        "degree": data.get("degree", None),
+        "skills": data.get("skills", None),
+    }
+
+
 def insert_new_user(data):
     try:
-       
-        username = data.get("username")
-        password = data.get("password")
-        if not (username and password):
+        user_data = _get_user_data(data)
+        if not user_data.get("username") or not user_data.get("password"):
             raise ValueError("Both username and password are required.")
 
-        hashed_password = bcrypt.generate_password_hash(password).decode('utf-8')
+        user_data["password"] = bcrypt.generate_password_hash(user_data["password"]).decode('utf-8')
 
-        job = data.get("job", None)
-        location = data.get("location", None)
-        full_job = data.get("full_job", None)
-        work_preference = data.get("work_preference", None)
-        experience = data.get("experience", None)
-        degree = data.get("degree", None)
-        skills = data.get("skills", None)
-        first_name = data.get("firstName", None)
-        last_name = data.get("lastName", None)
-
-        
-        user = {
-            "first_name": first_name,
-            "last_name": last_name,
-            "username": username,
-            "password": hashed_password,
-            "job": job,
-            "location": location,
-            "full_job": full_job,
-            "work_preference": work_preference,
-            "experience": experience,
-            "degree": degree,
-            "skills": skills,
-        }
-        
-        return insert_one(db.users, user)
+        return insert_one(db.users, user_data)
 
     except ValueError as ve:
         raise ve 
@@ -67,7 +56,11 @@ def get_user(username):
     
 def authenticate_user(user, password):
     hashed_password = user.get("password")
-    return bcrypt.check_password_hash(hashed_password, password)
+    print(password)
+    print(hashed_password)
+    ans = bcrypt.check_password_hash(hashed_password, password)
+    print(ans)
+    return ans
 
 def login_user(username, password):
     user = get_user(username)
