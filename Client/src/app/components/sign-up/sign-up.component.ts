@@ -1,21 +1,65 @@
 import { Component } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { AppComponent } from 'src/app/app.component';
+import { HttpService } from 'src/app/services/http.service';
+import { User } from 'src/app/user';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-sign-up',
   templateUrl: './sign-up.component.html',
-  styleUrls: ['./sign-up.component.css']
+  styleUrls: ['./sign-up.component.css'],
 })
 export class SignUpComponent {
-
+  user!: User;
   signUpForm: FormGroup;
   gender!: string;
   hide = true;
-  skills: string[] = ["Python", "JavaScript", "Java", "C++", "HTML/CSS", "SQL", "Git", "Data Structures", "Algorithms", "Object-Oriented Programming", "Web Development", "Backend Development", "Frontend Development", "Mobile Development", "React", "Angular", "Vue.js", "Node.js", "Express.js", "RESTful APIs", "Databases", "UI/UX Design", "Test-Driven Development", "Agile Methodologies", "CI/CD", "DevOps", "Cloud Computing", "Cybersecurity", "Machine Learning", "Deep Learning", "Natural Language Processing", "Computer Vision", "Big Data", "Blockchain", "IoT"];
+  skills: string[] = [
+    'Python',
+    'JavaScript',
+    'Java',
+    'C++',
+    'HTML/CSS',
+    'SQL',
+    'Git',
+    'Data Structures',
+    'Algorithms',
+    'Object-Oriented Programming',
+    'Web Development',
+    'Backend Development',
+    'Frontend Development',
+    'Mobile Development',
+    'React',
+    'Angular',
+    'Vue.js',
+    'Node.js',
+    'Express.js',
+    'RESTful APIs',
+    'Databases',
+    'UI/UX Design',
+    'Test-Driven Development',
+    'Agile Methodologies',
+    'CI/CD',
+    'DevOps',
+    'Cloud Computing',
+    'Cybersecurity',
+    'Machine Learning',
+    'Deep Learning',
+    'Natural Language Processing',
+    'Computer Vision',
+    'Big Data',
+    'Blockchain',
+    'IoT',
+  ];
   selectedSkills: string[] = [];
-  
-  constructor(private formBuilder: FormBuilder, private appComponentParent: AppComponent) {
+
+  constructor(
+    private formBuilder: FormBuilder,
+    private appComponentParent: AppComponent,
+    private httpService: HttpService,
+    private router: Router
+  ) {
     this.appComponentParent.displayNavbar = false;
 
     this.signUpForm = this.formBuilder.group({
@@ -29,9 +73,9 @@ export class SignUpComponent {
   toggleSelection(str: string): void {
     const index = this.selectedSkills.indexOf(str);
     if (index > -1) {
-      this.selectedSkills.splice(index, 1); // Deselect the button if already selected
+      this.selectedSkills.splice(index, 1);
     } else {
-      this.selectedSkills.push(str); // Select the button if not already selected
+      this.selectedSkills.push(str);
     }
   }
 
@@ -41,5 +85,15 @@ export class SignUpComponent {
 
   isFormInvalid(): boolean {
     return this.signUpForm && this.signUpForm.invalid;
+  }
+  createAccount() {
+    this.user = {
+      ...this.signUpForm.value,
+      gender: this.gender,
+      skills: this.selectedSkills,
+    };
+    this.httpService.post<User>('signup', this.user).subscribe((res) => {
+      this.router.navigate(['/']);
+    });
   }
 }

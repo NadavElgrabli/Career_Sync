@@ -1,18 +1,21 @@
 from flask import jsonify, request, Blueprint,session
 from token_utils import generate_token
 from utils import insert_new_user, login_user
-
+from flask_cors import CORS
 app = Blueprint('routes', __name__)
+CORS(app)
 
 @app.route('/', methods=['GET'])
 def handle_get():
     return '<h1> Exemple  </h1>'
 
-@app.route('/register', methods=['POST'])
+@app.route('/signup', methods=['POST'])
 def handle_post():
     data = request.json
-    if insert_new_user(data):
-        return 'User successfully added to the database', 200
+    newUser = insert_new_user(data)
+    if newUser:
+        print(newUser)
+        return jsonify(data), 200
     else:
         return 'Failed to add user to the database', 500
 
@@ -20,12 +23,15 @@ def handle_post():
 def login():
     try:
         data = request.json
+        print(data)
         username = data.get("username")
         password = data.get("password")
-
+        
         user = login_user(username, password)
         if user:
+            print("before token")
             token = generate_token(username)
+            print("after token")
             if token:
                 session['logged_in'] = True
                 return jsonify({

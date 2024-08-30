@@ -17,7 +17,7 @@ def insert_one(collection, entity):
     try:
         result = collection.insert_one(entity)
         if result.acknowledged:
-            return True
+            return entity
         else:
             raise ValueError("Insert operation not acknowledged")
     except Exception as e:

@@ -7,6 +7,5 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'Career_Sync';
-  
   displayNavbar = true;
 }
