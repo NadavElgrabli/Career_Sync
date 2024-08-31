@@ -13,6 +13,7 @@ export class SignInComponent {
 
   signInForm: FormGroup;
   hide = true;
+  user !: User;
 
   constructor(private parent: NavBarComponent, private formBuilder: FormBuilder,private httpService: HttpService) {
     this.signInForm = this.formBuilder.group({
@@ -21,12 +22,14 @@ export class SignInComponent {
     });
   }
 
-  login(){
-    this.httpService.post<any>('login',this.signInForm.value).subscribe(res => {
+  login() {
+    this.httpService.post<any>('login', this.signInForm.value).subscribe(res => {
       localStorage.setItem('token', res.token);
       localStorage.setItem('user', JSON.stringify(res.user));
-      this.isSignInVisible()
-    })
+      this.user = res.user;
+      this.parent.user = this.user;
+      this.isSignInVisible(); 
+    });
   }
   
   isSignInVisible()

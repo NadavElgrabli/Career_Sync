@@ -12,7 +12,8 @@
         </ul>
 
         <div class="login">
-            <li (click)="isSignInVisible=!isSignInVisible">Login</li>
+            <li *ngIf="!user" (click)="isSignInVisible=!isSignInVisible">Login</li>
+            <li *ngIf="user" (click)="logout()" routerLink="/home-page">Log Out</li>
         </div>
         
         <app-sign-in *ngIf="isSignInVisible"></app-sign-in>
