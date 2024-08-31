@@ -5,14 +5,12 @@ import { Injectable } from '@angular/core';
 })
 export class SessionService {
   getUserFromSession() {
-    const user = sessionStorage.getItem('currentUser');
-    if (user) {
-      return JSON.parse(user);
-    }
-    return null;
+    const user = localStorage.getItem('user');
+    return user ? JSON.parse(user) : null;
   }
 
   logout() {
-    sessionStorage.removeItem('currentUser');
+    localStorage.removeItem('token');
+    localStorage.removeItem('user');
   }
 }
