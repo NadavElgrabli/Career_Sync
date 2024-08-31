@@ -17,7 +17,7 @@ import { ChatComponent } from '../components/chat/chat.component';
 import { SignInComponent } from '../components/sign-in/sign-in.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatIconModule } from '@angular/material/icon';
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { JobCardComponent } from '../components/job-card/job-card.component';
 import { HttpClientModule } from '@angular/common/http';
 
@@ -45,7 +45,8 @@ import { HttpClientModule } from '@angular/common/http';
     ReactiveFormsModule,
     MatPaginatorModule,
     MatCardModule,
-    HttpClientModule
+    HttpClientModule,
+    FormsModule
   ],
   providers: [],
   bootstrap: [AppComponent],

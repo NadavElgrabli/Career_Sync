@@ -4,11 +4,13 @@
             <h2>Chat with Career Sync</h2>
         </div>
         <div class="chat-messages">
-            <!-- Chat messages will go here -->
+            <div *ngFor="let message of messages" class="chat-message">
+                {{ message.text }}
+            </div>
         </div>
         <div class="chat-input-container">
-            <input type="text" class="chat-input" placeholder="Type your message...">
-            <button class="send-button">Send</button>
+            <input type="text" [(ngModel)]="newMessage" class="chat-input" placeholder="Type your message..." (keydown.enter)="sendMessage()">
+            <button class="send-button" (click)="sendMessage()">Send</button>
         </div>
     </div>
     <ng-template #notLoggedIn>
