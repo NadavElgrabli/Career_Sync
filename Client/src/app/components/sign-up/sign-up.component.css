@@ -1,127 +1,120 @@
-.register-form {
-    flex-wrap: wrap;
+body, html {
+    margin: 0;
+    padding: 0;
+    font-family: 'Arial', sans-serif;
+    height: 100%;
+    background-color: white;
+    display: flex;
     justify-content: center;
-    padding: 3%;
+    align-items: center;
+}
 
-    div {
-        gap: 3%;
-        display: flex;
-        justify-content: center;
+.signup-page {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
 
-        .short-filed {
-            width: 190px;
-        }
+.signup-container {
+    width: 70%;
+    max-width: 800px;
+    background-color: white;
+    padding: 40px;
+    border-radius: 15px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    min-height: 600px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
 
-        .filed {
-            width: 300px;
-        }
-
-        .long-filed {
-            width: 640px;
-        }
-    }
+.stepper {
+    width: 100%;
+    flex: 1;
 }
 
 .title {
-    display: flex;
-    justify-content: center;
+    font-size: 24px;
     font-weight: bold;
-    margin-top: 5%;
-    margin-bottom: 0%;
+    margin-bottom: 20px;
+    text-align: center;
+    color: #333;
+}
+
+.form-group {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+}
+
+.field, .long-field {
+    width: 100%;
+}
+
+.long-field {
+    margin-top: 20px;
 }
 
 .gender-icons-container {
     display: flex;
-    flex-direction: row;
-    gap: 20%;
-    cursor: pointer;
     justify-content: center;
-    padding: 5%;
+    gap: 40px;
+    margin-top: 30px;
+}
 
-    img {
-        width: 20%;
-    }
+.gender-icons-container img {
+    width: 100px;
+    height: 100px;
+    cursor: pointer;
+    border-radius: 50%;
+    transition: transform 0.3s ease;
+}
 
-    .img-selected {
-        border-radius: 50%;
-        border: 5px solid #05692E;
-    }
+.img-selected {
+    transform: scale(1.1);
+    border: 2px solid #6c63ff;
 }
 
 .tags-container {
-    gap: 15px;
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
-    padding: 4% 6% 3%;
+    gap: 10px;
+    margin-top: 20px;
+}
 
-    button {
-        align-items: center;
-        background-color: #fff;
-        border: 1px solid #ccc;
-        border-radius: 20px;
-        cursor: pointer;
-        height: 50px;
-        justify-content: center;
-        letter-spacing: 0.25px;
-        font-weight: bold;
-        padding: 5px;
-        width: 150px;
-        font-size: 16px;
-    }
+.tags-container button {
+    background-color: #e9e9e9;
+    border: none;
+    border-radius: 20px;
+    padding: 10px 20px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
 
-    button.selected {
-        background-color: #05692E;
-    }
+.tags-container button.selected {
+    background-color: #6c63ff;
+    color: white;
 }
 
 .navigation-btn {
+    margin-top: 30px;
     display: flex;
-    justify-content: center;
-    padding: 5%;
+    justify-content: space-between;
 }
 
-::ng-deep .mat-step-header .mat-step-icon-selected,
-::ng-deep .mat-step-header .mat-step-icon-state-done,
-::ng-deep .mat-step-header .mat-step-icon-state-edit {
-    background-color: #05692E !important;
-    color: #fff !important;
+.navigation-btn button {
+    background-color: #6c63ff;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
 }
 
-.submit-button-container {
-    display: flex;
-    justify-content: center;
-
-    .submit-button {
-            align-items: center;
-            background-color: #fff;
-            border: 1px solid #ccc;
-            border-radius: 10px;
-            cursor: pointer;
-            height: 50px;
-            justify-content: center;
-            letter-spacing: 0.25px;
-            font-weight: bold;
-            padding: 5px;
-            width: 150px;
-            font-size: 16px;
-            margin: 2%;
-    }
-
-    .submit-button:hover {
-        background-color: lightgray;
-    }
-
-    .spinner{
-        margin-top: 3%;
-    }
-
-}
-
-.small-icon {
-    transform: scale(0.75);
-}
-
-.mat-mdc-progress-spinner {
-    --mdc-circular-progress-active-indicator-color:  #05692E;
+.navigation-btn button:hover {
+    background-color: #5751d1;
 }

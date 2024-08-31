@@ -1,38 +1,34 @@
-<div  class="modal">
-    <img class="close-button" (click)="isSignInVisible()" src="../../../assets/images/X.svg" alt="x-img">
+<div class="modal">
+    <img class="close-button" (click)="isSignInVisible()" src="../../../assets/images/X.svg" alt="Close">
     <div class="modal-content">
         <p class="title">SIGN IN</p>
         <p class="text">To continue the order, please sign in</p>
         <form *ngIf="signInForm" [formGroup]="signInForm" class="login-form">
             <div class="form-group">
-                <div>
-                    <mat-form-field class="filed">
-                        <mat-label for="username">Username</mat-label>
-                        <input matInput placeholder="Enter Username" formControlName="username" required>
-                    </mat-form-field>
-                </div>
-                <div>
-                    <mat-form-field class="filed">
-                        <mat-label>Password</mat-label>
-                        <input [type]="hide ? 'password' : 'text'" matInput placeholder="Enter Password"
-                            formControlName="password" required>
-                        <mat-error *ngIf="signInForm.get('password')?.hasError('pattern')">
-                            Password must contain at least 6 characters.
-                        </mat-error>
-                        <button mat-icon-button matSuffix (click)="hide = !hide"
-                            [attr.aria-label]="'Toggle password visibility'" [attr.aria-pressed]="hide">
-                            <mat-icon class="small-icon">{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
-                        </button>
-                    </mat-form-field>
-                </div>
+                <mat-form-field class="field">
+                    <mat-label for="username">Username</mat-label>
+                    <input matInput placeholder="Enter Username" formControlName="username" required>
+                </mat-form-field>
+                <mat-form-field class="field">
+                    <mat-label>Password</mat-label>
+                    <input [type]="hide ? 'password' : 'text'" matInput placeholder="Enter Password"
+                        formControlName="password" required>
+                    <mat-error *ngIf="signInForm.get('password')?.hasError('pattern')">
+                        Password must contain at least 6 characters.
+                    </mat-error>
+                    <button mat-icon-button matSuffix (click)="hide = !hide"
+                        [attr.aria-label]="'Toggle password visibility'" [attr.aria-pressed]="hide">
+                        <mat-icon class="small-icon">{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+                    </button>
+                </mat-form-field>
             </div>
-            <div (click)="login()" class="login">
-                <img class="btn" class="btn" class="login-btn" src="../../../assets/images/login.svg" alt="login-img">
+            <div class="login">
+                <img class="btn login-btn" src="../../../assets/images/login.svg" alt="Login">
             </div>
         </form>
         <div class="login">
-            <img class="or" src="../../../assets/images/or.svg" alt="or">
-            <img class="sign-up-btn" routerLink="/sign-up-page" (click)="isSignInVisible()" src="../../../assets/images/sign_up.svg" alt="sign-up">
+            <img class="or" src="../../../assets/images/or.svg" alt="Or">
+            <img class="sign-up-btn" routerLink="/sign-up-page" (click)="isSignInVisible()" src="../../../assets/images/sign_up.svg" alt="Sign Up">
         </div>
     </div>
 </div>

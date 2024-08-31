@@ -6,13 +6,11 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatCardModule } from '@angular/material/card';
-
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from '../app.component';
 import { HomePageComponent } from '../components/home-page/home-page.component';
 import { NavBarComponent } from '../components/nav-bar/nav-bar.component';
 import { SignUpComponent } from '../components/sign-up/sign-up.component';
-import { ChatBtnComponent } from '../components/chat-btn/chat-btn.component';
 import { CareersPageComponent } from '../components/careers-page/careers-page.component';
 import { AboutComponent } from '../components/about/about.component';
 import { ChatComponent } from '../components/chat/chat.component';
@@ -29,7 +27,6 @@ import { HttpClientModule } from '@angular/common/http';
     HomePageComponent,
     NavBarComponent,
     SignUpComponent,
-    ChatBtnComponent,
     CareersPageComponent,
     AboutComponent,
     ChatComponent,

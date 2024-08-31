@@ -1,90 +1,94 @@
+body, html {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+    height: 100%;
+    background-color: white;
+}
+
 .modal {
     position: fixed;
     z-index: 1;
-    padding-top: 90px;
-    left: 0;
     top: 0;
+    left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgb(0, 0, 0);
     background-color: rgba(0, 0, 0, 0.7);
-}
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
 
 .close-button {
-    width: 15px;
-    height: 15px;
-    margin-bottom: 2px;
-    margin-left: 470px;
+    width: 10px;
+    height: 10px;
+    top: 15px;
+    right: 15px;
+    cursor: pointer;
+    position: fixed;
+    margin-right: 65%;
+    margin-top: 9%;
 }
 
 .modal-content {
     background-color: #fefefe;
-    margin: auto;
-    width: 500px;
+    padding: 20px;
+    padding-left: 60px;
+    padding-right: 60px;
+    border-radius: 10px;
+    width: 90%;
+    max-width: 400px;
     height: auto;
     display: flex;
-    justify-content: center;
     flex-direction: column;
     align-items: center;
     color: #000000;
-    font-family: 'Helvetica Neue';
+    font-family: 'Helvetica Neue', Arial, sans-serif;
     font-size: 16px;
     letter-spacing: 1.97px;
+    position: relative;
+}
 
-    .title {
-        font-size: 24px;
-        font-weight: bold;
-        margin-top: 35px;
-        margin-bottom: 0px;
-    }
+.title {
+    font-size: 22px;
+    font-weight: bold;
+    margin-top: 15px;
+    margin-bottom: 10px;
+    text-align: center;
+}
 
-    .text {
-        font-size: 18px;
-        margin-top: 10px;
-    }
+.text {
+    font-size: 16px;
+    margin-top: 10px;
+    text-align: center;
+}
 
-    .details {
-        display: flex;
-        flex-direction: column;
-        align-items: left;
-        width: 351px;
-        height: 125px;
+.form-group {
+    width: 100%;
+}
 
-        .input {
-            width: 360px;
-            height: 30px;
-            border-bottom: 0.5px solid #000000;
-            flex: none;
-            margin: 12px 0px;
-        }
-    }
+.field {
+    width: 100%;
+    margin-bottom: 15px;
+}
 
-    .login {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        flex-direction: column;
-        margin-top: 54;
+.login {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    margin-top: 20px;
+}
 
-        .login-btn {
-            width: 155px;
-            height: 36px;
-        }
+.login-btn, .sign-up-btn {
+    width: 100%;
+    max-width: 155px;
+    height: 36px;
+    margin-bottom: 10px;
+}
 
-        .forget-password {
-            margin-top: 14px;
-            font-weight: bold;
-        }
-
-        .or {
-            margin-top: 20px;
-        }
-
-        .sign-up-btn {
-            width: 155px;
-            height: 36px;
-            margin-top: 20px;
-            margin-bottom: 20px;
-        }
-    }
+.or {
+    margin-top: 10px;
+    margin-bottom: 25px;
+    text-align: center;
 }
