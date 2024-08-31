@@ -92,3 +92,24 @@ body, html {
 .send-button:hover {
     background-color: #5751d1;
 }
+
+.chat-unavailable {
+    text-align: center;
+    font-size: 18px;
+    color: #333;
+    padding: 20px;
+}
+
+.chat-unavailable p {
+    margin: 0;
+}
+
+.chat-unavailable a {
+    color: #6c63ff;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.chat-unavailable a:hover {
+    text-decoration: underline;
+}

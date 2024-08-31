@@ -1,5 +1,5 @@
 <div class="chat-page">
-    <div class="chat-container">
+    <div *ngIf="isLoggedIn(); else notLoggedIn" class="chat-container">
         <div class="chat-header">
             <h2>Chat with Career Sync</h2>
         </div>
@@ -11,4 +11,9 @@
             <button class="send-button">Send</button>
         </div>
     </div>
+    <ng-template #notLoggedIn>
+        <div class="chat-unavailable">
+            <p>Chat is unavailable. Please <a routerLink="/sign-in">sign in</a> to access the chat.</p>
+        </div>
+    </ng-template>
 </div>
