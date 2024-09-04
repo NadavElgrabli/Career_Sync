@@ -1,4 +1,5 @@
 from flask import jsonify, request, Blueprint,session
+from algorithm.questions import Chatbot
 from token_utils import generate_token
 from utils import insert_new_user, login_user
 from flask_cors import CORS
@@ -44,4 +45,23 @@ def login():
         else:
             return jsonify({"message": "Invalid username or password"}), 401
     except Exception:
+        return jsonify({"message": "Internal Server Error"}), 500
+
+chatbot = Chatbot()
+
+
+@app.route('/chat', methods=['POST'])
+def chat():
+    try:
+        data = request.json
+        user_message = data.get("message")
+
+        if user_message == "start":
+            bot_response = "Hello! Welcome to Career Sync. What job are you looking for?"
+        else:
+            bot_response = chatbot.ask_question(user_message)
+
+        return jsonify({"response": bot_response}), 200
+    except Exception as e:
+        print(f"Error during chatbot conversation: {e}")
         return jsonify({"message": "Internal Server Error"}), 500
