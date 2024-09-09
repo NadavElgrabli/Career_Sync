@@ -14,7 +14,6 @@ def handle_post():
     data = request.json
     newUser = insert_new_user(data)
     if newUser:
-        print(newUser)
         return jsonify(data), 200
     else:
         return 'Failed to add user to the database', 500
@@ -23,15 +22,14 @@ def handle_post():
 def login():
     try:
         data = request.json
-        print(data)
         username = data.get("username")
         password = data.get("password")
         
         user = login_user(username, password)
         if user:
-            print("before token")
+            
             token = generate_token(username)
-            print("after token")
+            
             if token:
                 session['logged_in'] = True
                 return jsonify({

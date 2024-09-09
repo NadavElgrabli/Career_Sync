@@ -56,10 +56,7 @@ def get_user(username):
     
 def authenticate_user(user, password):
     hashed_password = user.get("password")
-    print(password)
-    print(hashed_password)
     ans = bcrypt.check_password_hash(hashed_password, password)
-    print(ans)
     return ans
 
 def login_user(username, password):
