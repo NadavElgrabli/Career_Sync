@@ -1,5 +1,5 @@
 from flask import jsonify, request, Blueprint,session
-from algorithm.questions import Chatbot
+from algorithm.chatbot import Chatbot
 from token_utils import generate_token
 from utils import insert_new_user, login_user
 from flask_cors import CORS
