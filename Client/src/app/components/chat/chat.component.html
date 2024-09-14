@@ -4,7 +4,9 @@
             <h2>Chat with Career Sync</h2>
         </div>
         <div class="chat-messages">
-            <div *ngFor="let message of messages" class="chat-message">
+            <div *ngFor="let message of messages" 
+                 [ngClass]="{'chat-message-user': isUserMessage(message), 'chat-message-bot': isBotMessage(message)}" 
+                 class="chat-message">
                 {{ message.text }}
             </div>
         </div>
