@@ -13,6 +13,7 @@ except ConnectionFailure as e:
 
 db = client.Career_Sync
 
+
 def insert_one(collection, entity):
     try:
         result = collection.insert_one(entity)

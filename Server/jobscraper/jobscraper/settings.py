@@ -71,9 +71,10 @@ DOWNLOADER_MIDDLEWARES = {
 
 # Configure item pipelines
 # See https://docs.scrapy.org/en/latest/topics/item-pipeline.html
-#ITEM_PIPELINES = {
-#    "jobscraper.pipelines.JobscraperPipeline": 300,
-#}
+ITEM_PIPELINES = {
+   "jobscraper.pipelines.JobscraperPipeline": 300,
+   "jobscraper.pipelines.MongoDBPipeline" : 301
+}
 
 # Enable and configure the AutoThrottle extension (disabled by default)
 # See https://docs.scrapy.org/en/latest/topics/autothrottle.html
