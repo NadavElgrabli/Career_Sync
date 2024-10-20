@@ -50,6 +50,7 @@ def get_user_data(user):
 def get_user(username):
     try:
         user = db.users.find_one({"username": username})
+        print(user)
         return user
     except Exception as e:
         return None
@@ -61,6 +62,7 @@ def authenticate_user(user, password):
 
 def login_user(username, password):
     user = get_user(username)
+    
     if user:
         if authenticate_user(user, password):
             return get_user_data(user)

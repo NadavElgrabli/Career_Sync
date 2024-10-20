@@ -6,9 +6,6 @@ from flask_cors import CORS
 app = Blueprint('routes', __name__)
 CORS(app)
 
-@app.route('/', methods=['GET'])
-def handle_get():
-    return '<h1> Exemple  </h1>'
 
 @app.route('/signup', methods=['POST'])
 def handle_post():
@@ -58,6 +55,7 @@ def chat():
             bot_response = "Hello! Welcome to Career Sync. What job are you looking for?"
         else:
             bot_response = chatbot.ask_question(user_message)
+            print(bot_response)
 
         return jsonify({"response": bot_response}), 200
     except Exception as e:

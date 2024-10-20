@@ -1,6 +1,6 @@
 import json
 import scrapy
-
+from jobscraper.items import JobscraperItem
 
 class MonsterspiderSpider(scrapy.Spider):
     name = "monsterspider"
@@ -68,19 +68,13 @@ class MonsterspiderSpider(scrapy.Spider):
             yield item
 
     def parse_job(self, job):
-        title = job['title']
-        url = job['url']
-        datePosted = job['datePosted']
-        organization = job['hiringOrganization']['name']
-        jobLocationType = job.get('jobLocationType','N/A')
-        
-        
-        return {
-                'title': title,
-                'url':url,
-                'datePosted':datePosted,
-                'organization':organization,
-                'jobLocationType': jobLocationType.upper()
-                }
+        job_item = JobscraperItem()
+        job_item['title'] = job['title']
+        job_item['url'] = job['url']
+        job_item['description'] = job['description']
+        job_item['datePosted'] = job['datePosted']
+        job_item['organization'] = job['hiringOrganization']['name']
+        job_item['jobLocationType'] = job.get('jobLocationType','N/A')
+        return job_item
         
 
