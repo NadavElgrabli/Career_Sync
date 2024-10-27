@@ -60,7 +60,7 @@ ROBOTSTXT_OBEY = False
 DOWNLOADER_MIDDLEWARES = {
     #  "jobscraper.middlewares.JobscraperDownloaderMiddleware": 543,
     #  "jobscraper.middlewares.ScrapeOpsFakeUserAgentMiddleware": 300,
-    # "jobscraper.middlewares.ScrapeOpsFakeBrowserHeaderAgentMiddleware": 400
+     "jobscraper.middlewares.ScrapeOpsFakeBrowserHeaderAgentMiddleware": 400
 }
 
 # Enable or disable extensions
