@@ -6,9 +6,6 @@ from flask_cors import CORS
 app = Blueprint('routes', __name__)
 CORS(app)
 
-@app.route('/', methods=['GET'])
-def handle_get():
-    return '<h1> Exemple  </h1>'
 
 @app.route('/signup', methods=['POST'])
 def handle_post():
@@ -32,6 +29,7 @@ def login():
             token = generate_token(username)
             
             if token:
+                session['username'] = username
                 session['logged_in'] = True
                 return jsonify({
                     "message": "Login successful!",
@@ -45,11 +43,23 @@ def login():
     except Exception:
         return jsonify({"message": "Internal Server Error"}), 500
 
+@app.route('/logout', methods=['POST'])
+def logout():
+    session.pop('logged_in', None)
+    session.pop('username', None)
+    return jsonify({"message": "Logged out successfully"}), 200
+
+
 chatbot = Chatbot()
 
 
+'''
+need to add token warper need to check fisrt the client side how he send data
+'''
+
 @app.route('/chat', methods=['POST'])
 def chat():
+    
     try:
         data = request.json
         user_message = data.get("message")
@@ -58,7 +68,7 @@ def chat():
             bot_response = "Hello! Welcome to Career Sync. What job are you looking for?"
         else:
             bot_response = chatbot.ask_question(user_message)
-
+            
         return jsonify({"response": bot_response}), 200
     except Exception as e:
         print(f"Error during chatbot conversation: {e}")

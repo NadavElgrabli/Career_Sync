@@ -3,38 +3,76 @@ from db import db,insert_one
 
 bcrypt = Bcrypt()
 
-def _get_user_data(data):
+def get_user_data_from_request(data):
+    """
+    Extracts and returns user data from the provided data dictionary.
+
+    Args:
+        data (dict): Dictionary containing user data.
+
+    Returns:
+        dict: A dictionary with user data.
+    """
     return {
-        "first_name": data.get("firstName", None),
-        "last_name": data.get("lastName", None),
+        "first_name": data.get("first_name"),
+        "last_name": data.get("last_name"),
         "username": data.get("username"),
         "password": data.get("password"),
-        "job": data.get("job", None),
-        "location": data.get("location", None),
-        "full_job": data.get("full_job", None),
-        "work_preference": data.get("work_preference", None),
-        "experience": data.get("experience", None),
-        "degree": data.get("degree", None),
-        "skills": data.get("skills", None),
+        "job": data.get("job"),
+        "location": data.get("location"),
+        "full_job": data.get("full_job"),
+        "work_preference": data.get("work_preference"),
+        "experience": data.get("experience"),
+        "degree": data.get("degree"),
+        "skills": data.get("skills"),
     }
 
 
 def insert_new_user(data):
+    
+    """
+    Inserts a new user into the database.
+
+    Args:
+        data (dict): Dictionary containing user data.
+
+    Returns:
+        dict or None: The inserted user data if successful, None otherwise.
+
+    Raises:
+        ValueError: If required fields are missing or user insertion fails.
+    """
+    
+    user_data = get_user_data_from_request(data)
+    username = user_data.get("username")
+    password = user_data.get("password")
+    if not username or not password:
+        raise ValueError("Both username and password are required.")
+    
+    if get_user(username):
+        raise ValueError("Username already exists.")
+
+    user_data["password"] = bcrypt.generate_password_hash(user_data["password"]).decode('utf-8')
     try:
-        user_data = _get_user_data(data)
-        if not user_data.get("username") or not user_data.get("password"):
-            raise ValueError("Both username and password are required.")
-
-        user_data["password"] = bcrypt.generate_password_hash(user_data["password"]).decode('utf-8')
-
         return insert_one(db.users, user_data)
-
     except ValueError as ve:
-        raise ve 
+        raise ValueError("Failed to insert user.")
     except Exception as e:
         raise ValueError(f"Failed to insert user: {str(e)}")
 
-def get_user_data(user):
+def get_public_user_data(user):
+    
+    
+    """
+    Extracts public user data from the user document.
+
+    Args:
+        user (dict): The user data from the database.
+
+    Returns:
+        dict: A dictionary with public user data.
+    """
+    
     return{
         "username": user.get("username"),
         "job": user.get("job"),
@@ -48,6 +86,18 @@ def get_user_data(user):
         "lastName": user.get("last_name"),
     }
 def get_user(username):
+    
+    """
+    Retrieves a user from the database by username.
+
+    Args:
+        username (str): The username of the user to retrieve.
+
+    Returns:
+        dict or None: The user data if found, None otherwise.
+    """
+    
+    
     try:
         user = db.users.find_one({"username": username})
         return user
@@ -55,13 +105,40 @@ def get_user(username):
         return None
     
 def authenticate_user(user, password):
+    
+    """
+    Authenticates a user by comparing the provided password with the stored hashed password.
+
+    Args:
+        user (dict): The user data from the database.
+        password (str): The plaintext password to verify.
+
+    Returns:
+        bool: True if authentication is successful, False otherwise.
+    """
+    
     hashed_password = user.get("password")
-    ans = bcrypt.check_password_hash(hashed_password, password)
-    return ans
+    if not hashed_password:
+        return False
+    return bcrypt.check_password_hash(hashed_password, password)
 
 def login_user(username, password):
+    
+    
+    """
+    Attempts to log in a user with the provided username and password.
+
+    Args:
+        username (str): The username of the user.
+        password (str): The plaintext password of the user.
+
+    Returns:
+        dict or None: User data (excluding password) if login is successful, None otherwise.
+    """
+    
     user = get_user(username)
+    
     if user:
         if authenticate_user(user, password):
-            return get_user_data(user)
+            return get_public_user_data(user)
     return None
