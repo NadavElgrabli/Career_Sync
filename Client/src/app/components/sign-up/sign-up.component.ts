@@ -13,33 +13,8 @@ import { Router } from '@angular/router';
 export class SignUpComponent {
   user!: User;
   signUpForm: FormGroup;
-  gender!: string;
-  hide = true;
-  skills: string[] = [
-    'Python',
-    'JavaScript',
-    'Java',
-    'C++',
-    'HTML/CSS',
-    'SQL',
-    'Git',
-    'Data Structures',
-    'Algorithms',
-    'Object-Oriented Programming',
-    'Web Development',
-    'Backend Development',
-    'Frontend Development',
-    'Mobile Development',
-    'React',
-    'Angular',
-    'Node.js',
-    'Databases',
-    'UI/UX Design',
-    'DevOps',
-    'Cloud Computing',
-    'Cybersecurity',
-  ];
-  selectedSkills: string[] = [];
+  hidePassword = true; // Track password visibility
+  hideConfirmPassword = true; // Track confirm password visibility
 
   constructor(
     private formBuilder: FormBuilder,
@@ -51,36 +26,41 @@ export class SignUpComponent {
 
     this.signUpForm = this.formBuilder.group({
       username: ['', Validators.required],
-      password: ['', [Validators.required, Validators.pattern('.{6,}')]],
+      password: ['', [Validators.required, Validators.pattern('^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]{6,}$')]],
+      confirmPassword: ['', Validators.required],
       firstName: ['', Validators.required],
       lastName: ['', Validators.required],
-    });
+    }, { validators: this.passwordMatchValidator }); // Custom validator for matching passwords
   }
 
-  toggleSelection(str: string): void {
-    const index = this.selectedSkills.indexOf(str);
-    if (index > -1) {
-      this.selectedSkills.splice(index, 1);
-    } else {
-      this.selectedSkills.push(str);
-    }
-  }
-
-  isSelected(str: string): boolean {
-    return this.selectedSkills.includes(str);
+  // Custom validator to check if passwords match
+  passwordMatchValidator(form: FormGroup) {
+    return form.get('password')?.value === form.get('confirmPassword')?.value ? null : { mismatch: true };
   }
 
   isFormInvalid(): boolean {
-    return this.signUpForm && this.signUpForm.invalid;
+    return this.signUpForm.invalid; // Return true if the form is invalid
   }
+
   createAccount() {
-    this.user = {
-      ...this.signUpForm.value,
-      gender: this.gender,
-      skills: this.selectedSkills,
-    };
-    this.httpService.post<User>('signup', this.user).subscribe((res) => {
-      this.router.navigate(['/']);
-    });
+    // Ensure the form is valid before creating the account
+    if (this.signUpForm.valid) {
+      this.user = {
+        ...this.signUpForm.value,
+      };
+      this.httpService.post<User>('signup', this.user).subscribe((res) => {
+        this.router.navigate(['/']);
+      });
+    } else {
+      console.error('Form is invalid'); // Optional: log the error
+    }
+  }
+
+  togglePasswordVisibility() {
+    this.hidePassword = !this.hidePassword;
+  }
+
+  toggleConfirmPasswordVisibility() {
+    this.hideConfirmPassword = !this.hideConfirmPassword;
   }
 }

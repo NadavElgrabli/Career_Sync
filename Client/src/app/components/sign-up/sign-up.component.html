@@ -1,76 +1,58 @@
 <div class="signup-page">
     <div class="signup-container">
-        <mat-stepper #stepper orientation="vertical" class="stepper">
-            <mat-step [stepControl]="signUpForm">
-                <h2 class="title">Enter Your Details</h2>
-                <ng-template matStepLabel>Details</ng-template>
-                <form *ngIf="signUpForm" [formGroup]="signUpForm" class="register-form">
-                    <div class="form-group">
-                        <mat-form-field class="field">
-                            <mat-label for="firstName">First Name</mat-label>
-                            <input matInput placeholder="Enter Your First Name" formControlName="firstName" required>
-                        </mat-form-field>
+        <h2 class="title">Enter Your Details</h2>
+        <form *ngIf="signUpForm" [formGroup]="signUpForm" class="register-form">
+            <div class="form-group">
+                <mat-form-field class="field">
+                    <mat-label for="firstName">First Name</mat-label>
+                    <input matInput placeholder="Enter Your First Name" formControlName="firstName" required>
+                </mat-form-field>
 
-                        <mat-form-field class="field">
-                            <mat-label for="lastName">Last Name</mat-label>
-                            <input matInput placeholder="Enter Your Last Name" formControlName="lastName" required>
-                        </mat-form-field>
-                    </div>
+                <mat-form-field class="field">
+                    <mat-label for="lastName">Last Name</mat-label>
+                    <input matInput placeholder="Enter Your Last Name" formControlName="lastName" required>
+                </mat-form-field>
+            </div>
 
-                    <div class="form-group">
-                        <mat-form-field class="long-field">
-                            <mat-label for="username">Username</mat-label>
-                            <input matInput placeholder="Enter Username" formControlName="username" required>
-                        </mat-form-field>
-                    </div>
+            <div class="form-group">
+                <mat-form-field class="long-field">
+                    <mat-label for="username">Username</mat-label>
+                    <input matInput placeholder="Enter Username" formControlName="username" required>
+                </mat-form-field>
+            </div>
 
-                    <div class="form-group">
-                        <mat-form-field class="long-field">
-                            <mat-label>Password</mat-label>
-                            <input [type]="hide ? 'password' : 'text'" matInput placeholder="Enter Password"
-                                formControlName="password" required>
-                            <mat-error *ngIf="signUpForm.get('password')?.hasError('pattern')">
-                                Password must contain at least 6 characters.
-                            </mat-error>
-                            <button mat-icon-button matSuffix (click)="hide = !hide"
-                                [attr.aria-label]="'Toggle password visibility'" [attr.aria-pressed]="hide">
-                                <mat-icon class="small-icon">{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
-                            </button>
-                        </mat-form-field>
-                    </div>
-                </form>
-                <div class="navigation-btn">
-                    <button mat-button matStepperNext>Next</button>
-                </div>
-            </mat-step>
+            <div class="form-group">
+                <mat-form-field class="long-field">
+                    <mat-label>Password</mat-label>
+                    <input [type]="hidePassword ? 'password' : 'text'" matInput placeholder="Enter Password"
+                        formControlName="password" required>
+                    <mat-error *ngIf="signUpForm.get('password')?.hasError('pattern')">
+                        Password must contain at least 6 characters, one letter, and one number.
+                    </mat-error>
+                    <button mat-icon-button matSuffix (click)="togglePasswordVisibility()"
+                        [attr.aria-label]="'Toggle password visibility'" [attr.aria-pressed]="hidePassword">
+                        <mat-icon class="small-icon">{{ hidePassword ? 'visibility_off' : 'visibility' }}</mat-icon>
+                    </button>
+                </mat-form-field>
+            </div>
 
-            <mat-step>
-                <ng-template matStepLabel>Gender</ng-template>
-                <h2 class="title">Select Your Gender</h2>
-                <div class="gender-icons-container">
-                    <img src="../../../assets/images/male.jpeg" alt="male-icon" (click)="gender='male'"
-                        [class.img-selected]="gender=='male'">
-                    <img src="../../../assets/images/female.jpeg" alt="female-icon" (click)="gender='female'"
-                        [class.img-selected]="gender=='female'">
-                </div>
-                <div class="navigation-btn">
-                    <button mat-button matStepperPrevious>Back</button>
-                    <button mat-button matStepperNext>Next</button>
-                </div>
-            </mat-step>
-
-            <mat-step>
-                <ng-template matStepLabel>Skills</ng-template>
-                <h2 class="title">Select Your Skills</h2>
-                <div class="tags-container">
-                    <button *ngFor="let skill of skills" [ngClass]="{ 'selected': isSelected(skill) }"
-                        (click)="toggleSelection(skill)">{{skill}}</button>
-                </div>
-                <div class="navigation-btn">
-                    <button mat-button matStepperPrevious>Back</button>
-                    <button (click)="createAccount()" mat-button>Create Account</button>
-                </div>
-            </mat-step>
-        </mat-stepper>
+            <div class="form-group">
+                <mat-form-field class="long-field">
+                    <mat-label>Confirm Password</mat-label>
+                    <input [type]="hideConfirmPassword ? 'password' : 'text'" matInput placeholder="Confirm Password"
+                        formControlName="confirmPassword" required>
+                    <mat-error *ngIf="signUpForm.hasError('mismatch')">
+                        Passwords must match.
+                    </mat-error>
+                    <button mat-icon-button matSuffix (click)="toggleConfirmPasswordVisibility()"
+                        [attr.aria-label]="'Toggle confirm password visibility'" [attr.aria-pressed]="hideConfirmPassword">
+                        <mat-icon class="small-icon">{{ hideConfirmPassword ? 'visibility_off' : 'visibility' }}</mat-icon>
+                    </button>
+                </mat-form-field>
+            </div>
+        </form>
+        <div class="navigation-btn">
+            <button (click)="createAccount()" mat-button>Create Account</button>
+        </div>
     </div>
 </div>
