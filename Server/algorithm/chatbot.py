@@ -70,13 +70,13 @@ class Chatbot:
             
         return f"{self.user_data}" #TODO: Delete - For Debug
 
-
+    
     def extract_job(self, doc):
         for index, token in enumerate(doc):
             #answers with full sentence where the job title consists of 3 words
             if (token.pos_ == "PROPN" and token.dep_ == "compound") and\
                 (doc[index + 1].pos_ == "PROPN" and doc[index + 1].dep_ == "compound") and\
-                    (doc[index + 2].pos_ == "PROPN" and (doc[index + 2].dep_ == "pobj" or doc[index + 2].dep_ == "attr")):
+                    ((doc[index + 2].pos_ == "PROPN" or doc[index + 2].pos_ == "NOUN") and (doc[index + 2].dep_ == "pobj" or doc[index + 2].dep_ == "attr" or doc[index + 2].dep_ == "dobj" or doc[index + 2].dep_ == "compound")):
                 return token.text + " " + doc[index + 1].text + " " + doc[index + 2].text
             # answers with just job title that consists of 3 words
             elif (token.pos_ == "PROPN" or token.pos_ == "NOUN") and token.dep_ == "compound" and\
@@ -86,21 +86,23 @@ class Chatbot:
                             ((doc[index + 2].pos_ == "PROPN" or doc[index + 2].pos_ == "NOUN") and\
                                 (doc[index + 2].dep_ == "ROOT" and doc[index + 2].head.text == doc[index + 2].text)):
                 return token.text + " " + doc[index + 1].text + " " + doc[index + 2].text
+            # answers with full sentence where job title consists of 2 words
+            elif ((token.pos_ == "PROPN" or token.pos_ == "NOUN") and (token.dep_ == "compound" or token.dep_ == "pobj")) and\
+                    (index + 1 < len(doc) and token.head.text ==doc[index +1].text) and\
+                        (doc[index + 1].pos_ == "PROPN" or doc[index + 1].pos_ == "NOUN") and (doc[index + 1].dep_ == "attr" or doc[index + 1].dep_ == "pobj"):
+                return token.text + " " + doc[index +1].text
             # answers with just job title thats consists of 2 words
-            elif ((token.pos_ == "PROPN" or token.pos_ == "NOUN") and token.dep_ == "compound") and\
+            elif ((token.pos_ == "PROPN" or token.pos_ == "NOUN" or token.pos_ == "ADJ") and token.dep_ == "compound") and\
                     (token.head.text == doc[index + 1].text and (doc[index + 1].pos_ == "PROPN" or doc[index + 1].pos_ == "NOUN") and\
                     doc[index + 1].dep_ == "ROOT") and\
                         (doc[index + 1].head.text == doc[index + 1].text):
                 return token.text + " " + doc[index + 1].text
-            elif token.pos_ == "PROPN" and\
-                (token.dep_ == "compound" or token.dep_ == "pobj") and\
-                    (token.head.text ==doc[index +1].text):
-                return token.text + " " + doc[index +1].text
+
             # One word job titles
             elif token.pos_ == "PROPN" and (token.dep_ == "compound" or token.dep_ == "pobj"):
                 return token.text
             else:
-                if token.pos_ == "NOUN" and token.dep_ == "attr": # and doc[index - 1].head == token:
+                if token.pos_ == "NOUN" and (token.dep_ == "attr" or token.dep_ == "ROOT") and doc[index - 1].head == token:
                     return token.text
         return "No job title found"
 
