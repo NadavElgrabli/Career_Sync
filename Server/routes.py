@@ -65,6 +65,7 @@ def chat():
         user_message = data.get("message")
 
         if user_message == "start":
+            chatbot.reset_chat()
             bot_response = "Hello! Welcome to Career Sync. What job are you looking for?"
         else:
             bot_response = chatbot.ask_question(user_message)

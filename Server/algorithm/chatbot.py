@@ -5,6 +5,9 @@ class Chatbot:
         self.user_data = {}
         self.nlp = spacy.load('en_core_web_sm')
 
+    def reset_chat(self):
+        self.user_data = {}
+
     def ask_question(self, message):
         doc = self.nlp(message)
         
@@ -12,7 +15,7 @@ class Chatbot:
             job_title = self.extract_job(doc)
             if job_title != "No job title found":
                 self.user_data['job'] = job_title
-                return f"Great! I see you're interested in {job_title}. What is your preferred location?"
+                return f"Great! I see you're interested in {job_title} position. What is your preferred location?"
             else:
                 return "I couldn't identify the job title. Could you try rephrasing it?"
 
