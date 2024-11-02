@@ -13,8 +13,9 @@ import { Router } from '@angular/router';
 export class SignUpComponent {
   user!: User;
   signUpForm: FormGroup;
-  hidePassword = true; // Track password visibility
-  hideConfirmPassword = true; // Track confirm password visibility
+  hidePassword = true;
+  hideConfirmPassword = true;
+  errorMessage: string | null = null; // Add this property
 
   constructor(
     private formBuilder: FormBuilder,
@@ -30,29 +31,32 @@ export class SignUpComponent {
       confirmPassword: ['', Validators.required],
       firstName: ['', Validators.required],
       lastName: ['', Validators.required],
-    }, { validators: this.passwordMatchValidator }); // Custom validator for matching passwords
+    }, { validators: this.passwordMatchValidator });
   }
 
-  // Custom validator to check if passwords match
   passwordMatchValidator(form: FormGroup) {
     return form.get('password')?.value === form.get('confirmPassword')?.value ? null : { mismatch: true };
   }
 
   isFormInvalid(): boolean {
-    return this.signUpForm.invalid; // Return true if the form is invalid
+    return this.signUpForm.invalid;
   }
 
   createAccount() {
-    // Ensure the form is valid before creating the account
     if (this.signUpForm.valid) {
       this.user = {
         ...this.signUpForm.value,
       };
-      this.httpService.post<User>('signup', this.user).subscribe((res) => {
-        this.router.navigate(['/']);
+      this.httpService.post<User>('signup', this.user).subscribe({
+        next: (res) => {
+          this.router.navigate(['/']);
+        },
+        error: (err) => {
+          this.errorMessage = 'Failed to create account. Please check your details and try again.';
+        }
       });
     } else {
-      console.error('Form is invalid'); // Optional: log the error
+      this.errorMessage = 'Please fill out all required fields correctly.';
     }
   }
 

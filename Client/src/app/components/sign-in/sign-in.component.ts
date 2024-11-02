@@ -13,9 +13,10 @@ export class SignInComponent {
 
   signInForm: FormGroup;
   hide = true;
-  user !: User;
+  user!: User;
+  errorMessage: string | null = null; // Added property for error message
 
-  constructor(private parent: NavBarComponent, private formBuilder: FormBuilder,private httpService: HttpService) {
+  constructor(private parent: NavBarComponent, private formBuilder: FormBuilder, private httpService: HttpService) {
     this.signInForm = this.formBuilder.group({
       username: ['', Validators.required],
       password: ['', [Validators.required, Validators.minLength(6)]],
@@ -23,17 +24,22 @@ export class SignInComponent {
   }
 
   login() {
-    this.httpService.post<any>('login', this.signInForm.value).subscribe(res => {
-      localStorage.setItem('token', res.token);
-      localStorage.setItem('user', JSON.stringify(res.user));
-      this.user = res.user;
-      this.parent.user = this.user;
-      this.isSignInVisible(); 
-    });
+    this.errorMessage = null; // Clear any previous error message
+    this.httpService.post<any>('login', this.signInForm.value).subscribe(
+      res => {
+        localStorage.setItem('token', res.token);
+        localStorage.setItem('user', JSON.stringify(res.user));
+        this.user = res.user;
+        this.parent.user = this.user;
+        this.isSignInVisible();
+      },
+      err => {
+        this.errorMessage = 'Invalid username or password. Please try again.';
+      }
+    );
   }
-  
-  isSignInVisible()
-  {
+
+  isSignInVisible() {
     this.parent.isSignInVisible = !this.parent.isSignInVisible;
   }
 }

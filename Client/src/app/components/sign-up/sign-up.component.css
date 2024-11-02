@@ -102,7 +102,7 @@ body, html {
 .navigation-btn {
     margin-top: 30px;
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
 }
 
 .navigation-btn button {
@@ -117,4 +117,11 @@ body, html {
 
 .navigation-btn button:hover {
     background-color: #5751d1;
+}
+
+.error-message {
+    color: red;
+    font-size: 0.9rem;
+    margin-bottom: 10px;
+    text-align: center;
 }

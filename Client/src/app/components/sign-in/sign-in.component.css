@@ -73,6 +73,13 @@ body, html {
     margin-bottom: 15px;
 }
 
+.error-message {
+    color: red;
+    font-size: 0.8rem;
+    margin-bottom: 10px;
+    text-align: center;
+}
+
 .login {
     display: flex;
     justify-content: center;

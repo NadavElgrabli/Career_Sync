@@ -11,8 +11,7 @@
                 </mat-form-field>
                 <mat-form-field class="field">
                     <mat-label>Password</mat-label>
-                    <input [type]="hide ? 'password' : 'text'" matInput placeholder="Enter Password"
-                        formControlName="password" required>
+                    <input [type]="hide ? 'password' : 'text'" matInput placeholder="Enter Password" formControlName="password" required>
                     <mat-error *ngIf="signInForm.get('password')?.hasError('pattern')">
                         Password must contain at least 6 characters.
                     </mat-error>
@@ -21,6 +20,9 @@
                         <mat-icon class="small-icon">{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
                     </button>
                 </mat-form-field>
+            </div>
+            <div *ngIf="errorMessage" class="error-message">
+                {{ errorMessage }}
             </div>
             <div class="login">
                 <img class="btn login-btn" src="../../../assets/images/login.svg" alt="Login" (click)="login()">

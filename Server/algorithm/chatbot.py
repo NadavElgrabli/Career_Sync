@@ -55,14 +55,14 @@ class Chatbot:
             has_degree = self.extract_if_has_degree(doc)
             if has_degree != "No degree found":
                 self.user_data['degree'] = has_degree
-                if self.user_data['degree'] == "User has a degree":
+                if self.user_data['degree'] == True:
                     return "Could you please specify your field of study?"
                 else:
                     return "Thank you! Let's move forward with the next step."
             else:
                 return "I couldn't determine if you have a degree. Could you please provide a clear answer?"
 
-        elif self.user_data['degree'] == "User has a degree":
+        elif self.user_data['degree'] == True:
             if 'degree_field' not in self.user_data:
                 degree_field = self.extract_degree_field(doc)
                 if degree_field != "No degree field found":
@@ -191,7 +191,9 @@ class Chatbot:
             "seventeen": "17",
             "eighteen": "18",
             "nineteen": "19",
-            "twenty": "20"
+            "twenty": "20",
+            "thirty": "30",
+            "fourrty": "40",
             # Add more mappings as needed
         }
         # Check if the text is in the mapping, if yes, return the digit representation
@@ -219,9 +221,9 @@ class Chatbot:
     def extract_if_has_degree(self, doc):
         for token in doc:
             if token.text.lower() == "yes":
-                return "User has a degree"
+                return True
             elif token.text.lower() == "no":
-                return "User does not have a degree"
+                return False
         return "No degree found"
 
 
