@@ -150,34 +150,19 @@ class Chatbot:
                 return token.text + " " + doc[index+1].text
             #answer is just: "full" or "part"
             elif token.text == "full" or token.text == "part":
-                return token.text + "time"
+                return token.text + " time"
         return "No job type found"
 
 
-    #on site, remote or hybrid work preference
+    # #on site, remote or hybrid work preference
     def extract_work_preference(self, doc):
-        num_tokens = len(doc)
-        for index, token in enumerate(doc):
-            # answer consists of: "on - site"
-            if (index + 2 < num_tokens and token.pos_ == "ADP" and (token.dep_ == "ROOT" or token.dep_ == "nmod" or token.dep_ =="prep") and
-                doc[index + 1].pos_ == "PUNCT" and
-                    doc[index + 2].pos_ == "NOUN" and (doc[index + 2].dep_ == "pobj" or doc[index+2].dep_ =="compound")):
-                return token.text + " " + doc[index+1].text + " " + doc[index + 2].text
-            # answer consists of: "on site"
-            elif (index + 1 < num_tokens and token.pos_ == "ADP" and token.dep_ == "ROOT" and
-                doc[index + 1].pos_ == "NOUN" and doc[index + 1].dep_ == "pobj"):
-                return token.text + " " + doc[index+1].text
-            # answer consists of: "remote" or "hybrid"
-            elif (index + 1 < num_tokens and token.pos_ == "ADJ" and
-                    (token.dep_ == "amod" or token.dep_ == "compound")):
-                return token.text
-            # answer consists of "hybrid" i think
-            elif (index + 1 < num_tokens and token.pos_ == "NOUN" and token.dep_ == "amod"):
-                return token.text
-            # answer is just: "hybrid" or "remote"
-            elif (token.pos_ == "NOUN" or token.pos_ == "ADJ") and (token.dep_ == "ROOT" or token.dep_ == "nsubj"):
-                return token.text
-        return "No work preference found"
+        work_preferences = ["on site", "remote", "hybrid"]
+        # Join the tokens in the document to form a complete sentence
+        sentence = " ".join([token.text for token in doc])
+        for preference in work_preferences:
+            if preference in sentence:
+                return preference  # Return the found preference
+        return "No work preference found"  # Return a default message if none found
 
 
     def text_to_digits(self, text):
