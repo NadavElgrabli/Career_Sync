@@ -7,7 +7,6 @@ class MonsterspiderSpider(scrapy.Spider):
     
     def __init__(self, *args, **kwargs):
         super(MonsterspiderSpider, self).__init__(*args, **kwargs)
-        self.start_urls = [kwargs.get("start_url", "https://www.monster.com/jobs/search")]
         self.list_len = 18
         self.query = kwargs.get('query', 'Full Stack').title()
         self.address = kwargs.get('address', 'San Lorenzo').title()
