@@ -1,6 +1,5 @@
 from playwright.sync_api import sync_playwright, Locator
 
-url = "https://www.indeed.com/jobs?q=full+stack&l=remote&ts=1729499545404&from=searchOnHP&rq=1&rsIdx=1&fromage=last&vjk=8e448e208480d912"
 
 
 class IndeedJobScraper:

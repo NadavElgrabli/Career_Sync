@@ -41,6 +41,7 @@ class MonsterspiderSpider(scrapy.Spider):
             "fingerprintId": "z150c72f5ac7a9d8ce376f6b50376a99c",
             "offset": self.list_len,
             "pageSize": self.list_len,
+            "searchId": "" ,
             "includeJobs": []
         }
 
@@ -48,6 +49,9 @@ class MonsterspiderSpider(scrapy.Spider):
             'Content-Type': 'application/json',
             'Accept': 'application/json',
         }
+        
+        print(headers)
+
 
       
         yield scrapy.Request(
