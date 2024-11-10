@@ -8,19 +8,22 @@ class MonsterspiderSpider(scrapy.Spider):
     def __init__(self, *args, **kwargs):
         super(MonsterspiderSpider, self).__init__(*args, **kwargs)
         self.list_len = 18
-        self.query = kwargs.get('query', 'Full Stack').title()
-        self.address = kwargs.get('address', 'San Lorenzo').title()
+        self.job = kwargs.get('job', 'Full Stack').title()
+        self.type_of_job = kwargs.get('type_of_job', 'full_time').upper()
+        self.location = kwargs.get('location', 'San Lorenzo').title()
+        self.work_preference = kwargs.get('work_preference', 'Hybrid').title()
+        self.experience = kwargs.get('experience', '1')
     
     def start_requests(self):
         url = "https://appsapi.monster.io/jobs-svx-service/v2/monster/search-jobs/samsearch/en-US?apikey=AE50QWejwK4J73X1y1uNqpWRr2PmKB3S"
-    
         data = {
             "jobQuery": {
-                "query": self.query,
+                "query": self.job,
+                "employmentTypes":[self.type_of_job],
                 "locations": [
                     {
                         "country": "us",
-                        "address": self.address,
+                        "address": self.location,
                         "radius": {
                             "unit": "mi",
                             "value": 20
@@ -50,10 +53,6 @@ class MonsterspiderSpider(scrapy.Spider):
             'Accept': 'application/json',
         }
         
-        print(headers)
-
-
-      
         yield scrapy.Request(
             url=url,
             method="POST",

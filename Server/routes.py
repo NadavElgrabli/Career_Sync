@@ -1,4 +1,5 @@
 from flask import jsonify, request, Blueprint,session
+from controller.chatbot_controller import handle_chat_request
 from algorithm.chatbot import Chatbot
 from token_utils import generate_token
 from utils import insert_new_user, login_user
@@ -59,18 +60,15 @@ need to add token warper need to check fisrt the client side how he send data
 
 @app.route('/chat', methods=['POST'])
 def chat():
-    
     try:
         data = request.json
-        user_message = data.get("message")
-
-        if user_message == "start":
-            chatbot.reset_chat()
-            bot_response = "Hello! Welcome to Career Sync. What job are you looking for?"
-        else:
-            bot_response = chatbot.ask_question(user_message)
-            
+        bot_response = handle_chat_request(data,chatbot)
+        
+        if bot_response is None:
+            return jsonify({"message": "Internal Server Error"}), 500
+        
         return jsonify({"response": bot_response}), 200
     except Exception as e:
-        print(f"Error during chatbot conversation: {e}")
+        print(f"Error in /chat route: {e}")
         return jsonify({"message": "Internal Server Error"}), 500
+
