@@ -1,22 +1,11 @@
-<div class="tp-box" (click)="toggleFlip()" [@flipState]="flip">
-    <div class="tp-box__side tp-box__front">
-        <mat-card class="mentor-card">
-            <mat-card-header class="card-header">
-                <mat-card-title class="title">job title</mat-card-title>
-            </mat-card-header>
-            <div class="card-content">
-                <mat-card-title class="title">jfsfs</mat-card-title>
-            </div>
-        </mat-card>
+<div class="job-card">
+    <h3>{{ job.title }}</h3>
+    <div class="tags">
+        <span class="tag">{{ job.location }}</span>
+        <span class="tag">{{ job.type_of_job }}</span>
+        <span class="tag">{{ job.employment_type }}</span>
     </div>
-    <div class="tp-box__side tp-box__back">
-        <mat-card class="mentor-card">
-            <mat-card-header class="card-header">
-                <mat-card-title>fsdfs</mat-card-title>
-            </mat-card-header>
-            <div class="card-content">
-                <mat-card-subtitle>dfsdf</mat-card-subtitle>
-            </div>
-        </mat-card>
-    </div>
+    <a [href]="job.url" target="_blank">
+        <button class="apply-now-btn">Apply Now</button>
+    </a>
 </div>

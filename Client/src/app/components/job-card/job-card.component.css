@@ -1,114 +1,33 @@
-.tp-box {
-    position: relative;
-    width: 400px;
-    height: 400px;
-    -webkit-transform-style: preserve-3d;
-    transform-style: preserve-3d;
-    -webkit-transform: transform 1s;
-    -ms-transform: transform 1s;
-    transform: transform 1s;
-}
-
-.tp-box__side {
-    width: 100%;
-    height: 100%;
-    position: absolute;
-
-    -webkit-backface-visibility: hidden;
-    backface-visibility: hidden;
-
-    text-align: center;
-    line-height: 100px;
-    font-size: 24px;
-    font-weight: 700;
-    cursor: pointer;
-    -webkit-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    user-select: none;
-}
-
-.tp-box__front {
-    -webkit-transform: rotateY(0deg);
-    -ms-transform: rotateY(0deg);
-    transform: rotateY(0deg);
-}
-
-.tp-box__back {
-    -webkit-transform: rotateY(-180deg);
-    -ms-transform: rotateY(-180deg);
-    transform: rotateY(-180deg);
-}
-
-.mentor-card {
-    width: 380px;
-    height: 380px;
-    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.3);
-    padding: 10px;
-
-    .card-header {
-        display: flex;
-        padding: 0px;
-        justify-content: center;
-
-        img {
-            object-fit: cover;
-            width: 100%;
-            height: 300px;
-        }
-    }
-}
-
-.card-content {
-    flex-direction: column;
+.job-card {
+    padding: 20px;
+    border-radius: 10px;
+    margin-bottom: 15px;
     display: flex;
-    margin-top: 10px;
-
-    .title {
-        font-weight: bold;
-    }
-
+    justify-content: space-between;
+    align-items: center;
 }
 
-/* For small devices (phones) */
-@media (max-width: 576px) {
+.job-card h3 {
+    margin: 0;
+}
 
-    .tp-box {
-        position: relative;
-        width: 200px;
-        height: 200px;
-        -webkit-transform-style: preserve-3d;
-        transform-style: preserve-3d;
-        -webkit-transform: transform 1s;
-        -ms-transform: transform 1s;
-        transform: transform 1s;
-    }
+.tags {
+    display: flex;
+    gap: 5px;
+}
 
-    .mentor-card {
-        width: 200px;
-        height: 200px;
-        padding: 10px;
+.tag {
+    background-color: #f0f5ff;
+    color: #6c63ff;
+    padding: 5px 10px;
+    border-radius: 15px;
+}
 
-        .card-header {
-            display: flex;
-            padding: 0px;
-
-            img {
-                object-fit: cover;
-                width: 100%;
-                height: 140px;
-            }
-        }
-    }
-
-    .card-content {
-        flex-direction: column;
-        display: flex;
-        margin-top: 5px;
-    
-        .title {
-            font-weight: bold;
-            font-size: 14px;
-        }
-    }
+.apply-now-btn {
+    background-color: #6c63ff;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
 }
