@@ -3,7 +3,7 @@ from middleware.auth_middleware import token_required
 from controller.chatbot_controller import handle_chat_request
 from algorithm.chatbot import Chatbot
 from token_utils import generate_token
-from utils import insert_new_user, login_user
+from utils import get_user_jobs, insert_new_user, login_user
 from flask_cors import CORS
 app = Blueprint('routes', __name__)
 CORS(app)
@@ -12,11 +12,15 @@ CORS(app)
 @app.route('/signup', methods=['POST'])
 def handle_post():
     data = request.json
-    newUser = insert_new_user(data)
-    if newUser:
-        return jsonify(data), 200
-    else:
-        return 'Failed to add user to the database', 500
+    try:
+        newUser = insert_new_user(data)
+        if newUser:
+            return jsonify(data), 200
+        else:
+            return 'Failed to add user to the database', 500
+    except Exception as e:
+        print(f"Error in /signup route: {e}")
+        return jsonify({"message": "Internal Server Error"}), 500
 
 @app.route('/login', methods=['POST'])
 def login():
@@ -63,7 +67,11 @@ need to add token warper need to check fisrt the client side how he send data
 # @token_required
 def chat():
     try:
+        #need to add the curr user
+        
         data = request.json
+        if not data:
+            return jsonify({"message": "Invalid input data"}), 400
         bot_response = handle_chat_request(data,chatbot)
         
         if bot_response is None:
@@ -74,3 +82,20 @@ def chat():
         print(f"Error in /chat route: {e}")
         return jsonify({"message": "Internal Server Error"}), 500
 
+@app.route('/jobs',methods=['POST'])
+# @token_required
+def get_jobs():
+    
+    username = request.user
+    jobs = get_user_jobs(username)
+    
+    if not jobs:
+        return jsonify({"message": "No jobs found"}), 404 
+    
+    for job in jobs:
+        job["_id"] = str(job["_id"])
+    
+    return jsonify({
+        "message": "Jobs found",
+        "jobs": jobs
+    }), 200  

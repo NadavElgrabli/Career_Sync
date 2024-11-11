@@ -122,6 +122,40 @@ def authenticate_user(user, password):
         return False
     return bcrypt.check_password_hash(hashed_password, password)
 
+
+from bson import ObjectId
+
+def get_user_jobs(username):
+    """
+    Retrieves all jobs associated with a user from the database by username,
+    including job scores.
+
+    Args:
+        username (str): The username of the user whose jobs to retrieve.
+
+    Returns:
+        list or None: A list of job data with scores if found, None otherwise.
+    """
+    
+    try:
+        user = get_user(username)
+        
+        if not user or "jobs" not in user:
+            return None
+        
+        job_ids = [ObjectId(job["id"]) for job in user["jobs"]]
+        job_scores = {job["id"]: job["job_score"] for job in user["jobs"]}
+        
+        jobs = list(db.jobs.find({"_id": {"$in": job_ids}}))
+        
+        for job in jobs:
+            job_id_str = str(job["_id"])
+            job["job_score"] = job_scores.get(job_id_str, None)
+        
+        return jobs if jobs else None
+    except Exception as e:
+        return None
+
 def login_user(username, password):
     
     
