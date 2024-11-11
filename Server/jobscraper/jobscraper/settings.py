@@ -9,8 +9,8 @@
 
 BOT_NAME = "jobscraper"
 
-SPIDER_MODULES = ["jobscraper.spiders"]
-NEWSPIDER_MODULE = "jobscraper.spiders"
+SPIDER_MODULES = ["jobscraper.jobscraper.spiders"]
+NEWSPIDER_MODULE = "jobscraper.jobscraper.spiders"
 
 
 
@@ -59,7 +59,7 @@ ROBOTSTXT_OBEY = False
 # See https://docs.scrapy.org/en/latest/topics/downloader-middleware.html
 DOWNLOADER_MIDDLEWARES = {
     #  "jobscraper.middlewares.JobscraperDownloaderMiddleware": 543,
-    "jobscraper.middlewares.ScrapeOpsFakeBrowserHeaderAgentMiddleware": 400
+    "jobscraper.jobscraper.middlewares.ScrapeOpsFakeBrowserHeaderAgentMiddleware": 400
 }
 
 # Enable or disable extensions
@@ -71,8 +71,8 @@ DOWNLOADER_MIDDLEWARES = {
 # Configure item pipelines
 # See https://docs.scrapy.org/en/latest/topics/item-pipeline.html
 ITEM_PIPELINES = {
-   "jobscraper.pipelines.JobscraperPipeline": 300,
-   "jobscraper.pipelines.MongoDBPipeline" : 301
+   "jobscraper.jobscraper.pipelines.JobscraperPipeline": 300,
+   "jobscraper.jobscraper.pipelines.MongoDBPipeline" : 301
 }
 
 # Enable and configure the AutoThrottle extension (disabled by default)

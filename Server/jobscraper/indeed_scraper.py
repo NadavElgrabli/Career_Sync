@@ -4,17 +4,20 @@ from playwright.sync_api import sync_playwright, Locator
 
 class IndeedJobScraper:
 
-    def __init__(self, url, max_jobs=5, headless=False):
-        self.url = url
-        self.max_jobs = max_jobs
-        self.headless = headless
+    def __init__(self, **kwargs ):
+        self.max_jobs = 5
+        self.job = str(kwargs.get("job")).replace(' ', '+')
+        self.location = str(kwargs.get('location', 'San Lorenzo')).title().replace(" ", "+")
+        self.url = f"https://www.indeed.com/jobs?q={self.job}&l={self.location}&ts=1729499545404&from=searchOnHP&rq=1&rsIdx=1&fromage=last&vjk=8e448e208480d912"
+        
+        
 
     def fetch_page_content(self):
         with sync_playwright() as p:
             browser = p.chromium.launch(headless=False)
             page = browser.new_page()
 
-            page.goto(url)
+            page.goto(self.url)
             job_cards = page.locator("td.resultContent").all()
             prev_title = ""
 

@@ -1,6 +1,6 @@
 import json
 import scrapy
-from jobscraper.items import JobscraperItem
+from jobscraper.jobscraper.items import JobscraperItem
 
 class MonsterspiderSpider(scrapy.Spider):
     name = "monsterspider"
@@ -9,13 +9,17 @@ class MonsterspiderSpider(scrapy.Spider):
         super(MonsterspiderSpider, self).__init__(*args, **kwargs)
         self.list_len = 18
         self.job = kwargs.get('job', 'Full Stack').title()
-        self.type_of_job = kwargs.get('type_of_job', 'full_time').upper()
+        self.type_of_job = str(kwargs.get('type_of_job', 'full_time')).upper().replace(' ', '_')
+
         self.location = kwargs.get('location', 'San Lorenzo').title()
         self.work_preference = kwargs.get('work_preference', 'Hybrid').title()
         self.experience = kwargs.get('experience', '1')
     
     def start_requests(self):
         url = "https://appsapi.monster.io/jobs-svx-service/v2/monster/search-jobs/samsearch/en-US?apikey=AE50QWejwK4J73X1y1uNqpWRr2PmKB3S"
+        for i in range(10):
+            print()
+        print(self.type_of_job)
         data = {
             "jobQuery": {
                 "query": self.job,

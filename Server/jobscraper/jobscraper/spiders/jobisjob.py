@@ -1,6 +1,6 @@
 import re
 import scrapy
-from jobscraper.items import JobscraperItem
+from jobscraper.jobscraper.items import JobscraperItem
 
 
 class JobisjobSpider(scrapy.Spider):
@@ -9,11 +9,11 @@ class JobisjobSpider(scrapy.Spider):
 
     def __init__(self, *args, **kwargs):
         super(JobisjobSpider, self).__init__(*args, **kwargs)
-        self.query = kwargs.get('query', 'Full Stack').title().replace(" ", "+")
-        self.address = kwargs.get('address', 'San Lorenzo').title().replace(" ", "+")
+        self.job = kwargs.get('job', 'Full Stack').title().replace(" ", "+")
+        self.location = kwargs.get('location', 'San Lorenzo').title().replace(" ", "+")
     
     def start_requests(self):
-        url = f'https://www.jobisjob.com/m/search?whatInSearchBox={self.query}&whereInSearchBox={self.address}&directUserSearch=true&page=1&order='
+        url = f'https://www.jobisjob.com/m/search?whatInSearchBox={self.job}&whereInSearchBox={self.location}&directUserSearch=true&page=1&order='
         self.logger.info(f'Starting requests with URL: {url}')
         yield scrapy.Request(url=url, callback=self.parse)
 

@@ -1,4 +1,5 @@
 from flask import jsonify, request, Blueprint,session
+from middleware.auth_middleware import token_required
 from controller.chatbot_controller import handle_chat_request
 from algorithm.chatbot import Chatbot
 from token_utils import generate_token
@@ -59,6 +60,7 @@ need to add token warper need to check fisrt the client side how he send data
 '''
 
 @app.route('/chat', methods=['POST'])
+# @token_required
 def chat():
     try:
         data = request.json
