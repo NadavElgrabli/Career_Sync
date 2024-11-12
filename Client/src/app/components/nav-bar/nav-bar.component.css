@@ -52,4 +52,10 @@
     color: gray;
     font-weight: lighter;
     margin-right: 1%;
+    display: flex;
+    align-items: center;
+}
+
+.login li {
+    margin-left: 10px;
 }
