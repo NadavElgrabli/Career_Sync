@@ -2,11 +2,11 @@
 from dotenv import find_dotenv, load_dotenv
 from itemadapter import ItemAdapter
 from bs4 import BeautifulSoup
-from jobscraper.items import JobscraperItem
+from jobscraper.jobscraper.items import JobscraperItem
 import os
 import pymongo
 import os
-from jobscraper.items import JobscraperItem
+
 
 
 

@@ -9,6 +9,10 @@ class Chatbot:
         self.user_data = {}
 
     def ask_question(self, message):
+        
+        # if message == "nadav" :
+        #     return f"DONE "
+        
         doc = self.nlp(message)
         
         if 'job' not in self.user_data:
@@ -71,7 +75,7 @@ class Chatbot:
                 else:
                     return "I couldn't identify your field of study. Could you please provide a specific field?"
             
-        return f"{self.user_data}" #TODO: Delete - For Debug
+        return f"DONE {self.user_data}" #TODO: Delete - For Debug
 
     
     def extract_job(self, doc):

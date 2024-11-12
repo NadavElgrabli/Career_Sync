@@ -7,3 +7,4 @@ export interface Job{
     type_of_job: string //full-time , part-time
     employment_type: string //on site, remote, hybrid
 }
+
