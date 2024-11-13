@@ -73,14 +73,26 @@ class MonsterspiderSpider(scrapy.Spider):
             item = self.parse_job(job_posting)
             yield item
 
+    def get_job_location(self, job):
+        job_location = job['jobLocation'][0].get('address', {})
+        addressLocality = job_location.get("addressLocality")
+        addressRegion = job_location.get("addressRegion")
+        addressCountry = job_location.get("addressCountry")
+        return ', '.join(filter(None, [addressLocality, addressRegion, addressCountry]))
+
     def parse_job(self, job):
         job_item = JobscraperItem()
         job_item['title'] = job['title']
         job_item['url'] = job['url']
         job_item['description'] = job['description']
-        job_item['datePosted'] = job['datePosted']
         job_item['organization'] = job['hiringOrganization']['name']
-        job_item['jobLocationType'] = job.get('jobLocationType','N/A')
-        return job_item
         
+        
+        job_item['location'] = self.get_job_location(job)
+        
+        job_location_type = job.get('jobLocationType', 'UNKNOWN')
+        job_item['job_type'] = 'ON_SITE' if job_location_type == 'UNKNOWN' else job_location_type
+
+        return job_item
+
 
