@@ -1,4 +1,4 @@
-
+import re
 from dotenv import find_dotenv, load_dotenv
 from bs4 import BeautifulSoup
 from jobscraper.jobscraper.items import JobscraperItem
@@ -7,17 +7,46 @@ import pymongo
 import os
 
 
-
-
-def description_html_2_txt(html_content):
-    soup = BeautifulSoup(html_content, 'lxml')
-    return soup.get_text()
-
-
 class JobscraperPipeline:
     def process_item(self, item : JobscraperItem, spider):
-        item['description'] = description_html_2_txt(item['description'])
+        
+        description = self.description_html_2_txt(item['description']).lower()
+        item['description'] = description
+        description_lower = description.lower()
+        item['job_preference'] = self.extract_work_preference(description_lower)
+        item['job_type'] = self.extract_job_type(description_lower)
         return item
+    
+    
+    def extract_job_type(self, description):
+        if re.search(r'\b(full[-\s]?time|permanent)\b', description):
+            return 'Full-time'
+        elif re.search(r'\b(part[-\s]?time)\b', description):
+            return 'Part-time'
+        elif re.search(r'\b(contract|contractor|freelance|temp|temporary)\b', description):
+            return 'Contract'
+        elif re.search(r'\b(intern|internship)\b', description):
+            return 'Internship'
+        elif re.search(r'\b(volunteer)\b', description):
+            return 'Volunteer'
+        else:
+            return 'Full-time'
+        
+    def extract_work_preference(self,description):
+    
+        if re.search(r'\b(remote|work from home|telecommute|fully remote|anywhere)\b', description):
+            return 'Remote'
+        elif re.search(r'\b(on-site|on site|office-based|in-office|in office)\b', description):
+            return 'Onsite'
+        elif re.search(r'\b(hybrid|flexible work|partially remote)\b', description):
+            return 'Hybrid'
+        else:
+            return 'Onsite'
+
+
+    def description_html_2_txt(self,html_content):
+        soup = BeautifulSoup(html_content, 'lxml')
+        return soup.get_text()
 
 
 
@@ -51,7 +80,7 @@ class MongoDBPipeline:
 
     def process_item(self, item : JobscraperItem, spider):
         existing_item = self.collection.find_one({"url": item.get("url")})
-        if existing_item:
+        if existing_item or (not item.get("url")):
             return item
         self.collection.insert_one(dict(item))
         return item

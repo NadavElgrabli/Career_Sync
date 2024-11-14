@@ -51,7 +51,6 @@ class IndeedJobScraper:
         existing_item = self.collection.find_one({
             "title": job_dic.get("title"),
             "location": job_dic.get("location"),
-            "job_type": job_dic.get("job_type"),
             'organization' : job_dic.get("organization"),
         })
         if existing_item:
@@ -94,12 +93,23 @@ class IndeedJobScraper:
         if description_element.count() > 0:
             html_content = description_element.inner_html()
             text_content = re.sub('<[^<]+?>', '', html_content)
-            return text_content.strip().lower()
+            return text_content.strip()
         return ""
     
     def get_job_organization(self, job):
         organization_element = job.locator('[data-testid="inlineHeader-companyName"]')
         return organization_element.inner_text()
+
+    def extract_work_preference(self,description):
+    
+        if re.search(r'\b(remote|work from home|telecommute|fully remote|anywhere)\b', description):
+            return 'Remote'
+        elif re.search(r'\b(on-site|on site|office-based|in-office|in office)\b', description):
+            return 'Onsite'
+        elif re.search(r'\b(hybrid|flexible work|partially remote)\b', description):
+            return 'Hybrid'
+        else:
+            return 'Onsite'
 
     
     def parse_job(self,job: Locator, last_job_title: str) :
@@ -114,13 +124,15 @@ class IndeedJobScraper:
         url = self.get_job_url(job)
         description = self.get_job_description(job)
         organization = self.get_job_organization(job)
+        job_preference = self.extract_work_preference(description.lower())
         job_dic = {
             'title' : title,
             'job_type' : job_type,
             'location' : location,
             'url' : url,
             'description' : description,
-            'organization':organization
+            'organization':organization,
+            'job_preference' : job_preference
         }
         
         return job_dic

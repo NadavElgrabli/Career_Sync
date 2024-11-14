@@ -1,7 +1,8 @@
 import ast
 from jobscraper.run_scraper import Scraper
+from algorithm.chatbot import Chatbot
 
-def handle_chat_request(data, chatbot):
+def handle_chat_request(data, chatbot : Chatbot):
     try:
         user_message = data.get("message")
         bot_response = ''
@@ -10,7 +11,7 @@ def handle_chat_request(data, chatbot):
             chatbot.reset_chat()
             bot_response = "Hello! Welcome to Career Sync. What job are you looking for?"
         elif user_message == "nadav":
-            bot_response = "DONE {'job': 'web developer', 'location': 'new york', 'type_of_job': 'full time', 'work_preference': 'hybrid', 'experience': '1', 'degree': True, 'degree_field': 'computer science'}"
+            bot_response = "DONE {'job': 'web developer', 'location': 'new york', 'job_type': 'full time', 'job_preference': 'hybrid', 'experience': '1', 'degree': True, 'degree_field': 'computer science'}"
         else:
             bot_response = chatbot.ask_question(user_message)
         

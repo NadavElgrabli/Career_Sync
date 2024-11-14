@@ -86,13 +86,8 @@ class MonsterspiderSpider(scrapy.Spider):
         job_item['url'] = job['url']
         job_item['description'] = job['description']
         job_item['organization'] = job['hiringOrganization']['name']
-        
-        
         job_item['location'] = self.get_job_location(job)
         
-        job_location_type = job.get('jobLocationType', 'UNKNOWN')
-        job_item['job_type'] = 'ON_SITE' if job_location_type == 'UNKNOWN' else job_location_type
-
         return job_item
 
 

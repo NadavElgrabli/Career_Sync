@@ -19,7 +19,6 @@ class Scraper:
         process.start()
 
     def run_spiders(self):
-        # Run Indeed scraper in a separate process
         indeed_process = Process(target=self.run_indeed_scraper)
         indeed_process.start()
 
