@@ -1,6 +1,5 @@
 
 from dotenv import find_dotenv, load_dotenv
-from itemadapter import ItemAdapter
 from bs4 import BeautifulSoup
 from jobscraper.jobscraper.items import JobscraperItem
 import os
@@ -20,10 +19,6 @@ class JobscraperPipeline:
         item['description'] = description_html_2_txt(item['description'])
         return item
 
-
-
-
-MAX_LEN_DESCRIPTION = 100
 
 
 class MongoDBPipeline:
@@ -58,6 +53,5 @@ class MongoDBPipeline:
         existing_item = self.collection.find_one({"url": item.get("url")})
         if existing_item:
             return item
-        item['description'] = item['description'][0:MAX_LEN_DESCRIPTION]
         self.collection.insert_one(dict(item))
         return item

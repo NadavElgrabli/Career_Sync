@@ -59,7 +59,7 @@ ROBOTSTXT_OBEY = False
 # See https://docs.scrapy.org/en/latest/topics/downloader-middleware.html
 DOWNLOADER_MIDDLEWARES = {
     #  "jobscraper.middlewares.JobscraperDownloaderMiddleware": 543,
-    "jobscraper.jobscraper.middlewares.ScrapeOpsFakeBrowserHeaderAgentMiddleware": 400
+     "jobscraper.jobscraper.middlewares.ScrapeOpsFakeBrowserHeaderAgentMiddleware": 400
 }
 
 # Enable or disable extensions
