@@ -14,13 +14,3 @@ export class JobCardComponent {
     job.is_submitted = !job.is_submitted;
   }
 }
-
-
-
-
-
-
-
-
-
-
