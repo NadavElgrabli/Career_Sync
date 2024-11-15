@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Msg } from 'src/app/interfaces/msg';
+import { User } from 'src/app/interfaces/user';
 import { HttpService } from 'src/app/services/http.service';
 import { SessionService } from 'src/app/services/sessionService';
 
@@ -11,6 +12,7 @@ import { SessionService } from 'src/app/services/sessionService';
 export class ChatComponent implements OnInit {
   messages: Msg[] = [];
   newMessage: string = '';
+  user!: User;
 
   constructor(
     private httpService: HttpService,
@@ -18,8 +20,9 @@ export class ChatComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    this.user = this.sessionService.getUserFromSession();
     this.httpService.post<any>('chat', { message: "start" }).subscribe(response => {
-      const botMessage: Msg = { text: response.response, sender: 'bot' };
+      const botMessage: Msg = { text: response.response, sender: 'bot', username: this.user.username };
       this.messages.push(botMessage);
     });
   }
@@ -30,11 +33,11 @@ export class ChatComponent implements OnInit {
 
   sendMessage() {
     if (this.newMessage.trim() !== '') {
-      const userMessage: Msg = { text: this.newMessage.trim(), sender: 'user' };
+      const userMessage: Msg = { text: this.newMessage.trim(), sender: 'user' , username: this.user.username };
       this.messages.push(userMessage);
 
-      this.httpService.post<any>('chat', { message: userMessage.text }).subscribe(response => {
-        const botMessage: Msg = { text: response.response, sender: 'bot' };
+      this.httpService.post<any>('chat', { message: userMessage.text, username: this.user.username }).subscribe(response => {
+        const botMessage: Msg = { text: response.response, sender: 'bot', username: this.user.username };
         this.messages.push(botMessage);
       });
 

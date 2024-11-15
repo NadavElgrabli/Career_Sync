@@ -29,8 +29,8 @@ export class SignUpComponent {
       username: ['', Validators.required],
       password: ['', [Validators.required, Validators.pattern('^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]{6,}$')]],
       confirmPassword: ['', Validators.required],
-      firstName: ['', Validators.required],
-      lastName: ['', Validators.required],
+      first_name: ['', Validators.required],
+      last_name: ['', Validators.required],
     }, { validators: this.passwordMatchValidator });
   }
 
