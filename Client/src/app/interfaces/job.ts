@@ -4,7 +4,8 @@ export interface Job{
     description : string,
     organization : string,
     location: string,
-    type_of_job: string //full-time , part-time
-    employment_type: string //on site, remote, hybrid
+    job_type: string //full-time , part-time
+    job_preference: string //on site, remote, hybrid
+    // experience: string;
+    is_submitted: boolean;
 }
-
