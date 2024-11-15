@@ -10,6 +10,7 @@ class Chatbot:
 
     def ask_question(self, message):
         
+
         doc = self.nlp(message)
         
         if 'job' not in self.user_data:
@@ -28,7 +29,7 @@ class Chatbot:
             else:
                 return "I couldn't identify the location. Please try again."
 
-        elif 'type_of_job' not in self.user_data:
+        elif 'job_type' not in self.user_data:
             job_type = self.extract_type_of_job(doc)
             if job_type != "No job type found":
                 self.user_data['job_type'] = job_type
@@ -36,10 +37,10 @@ class Chatbot:
             else:
                 return "I couldn't identify if you want full-time or part-time work. Could you specify?"
 
-        elif 'work_preference' not in self.user_data:
-            work_preference = self.extract_work_preference(doc)
-            if work_preference != "No work preference found":
-                self.user_data['job_preference'] = work_preference
+        elif 'job_preference' not in self.user_data:
+            job_preference = self.extract_work_preference(doc)
+            if job_preference != "No work preference found":
+                self.user_data['job_preference'] = job_preference
                 return "How many years of experience do you have?"
             else:
                 return "I couldn't identify your work preference. Please specify if you want hybrid, on-site, or remote work."

@@ -39,10 +39,6 @@ class JobisjobSpider(scrapy.Spider):
         title = response.css('p.title::text').get()
         url = response.css('div#offer-actions ul li a::attr(href)').get()
         description = re.sub(r'\s+', ' ', response.css('div#description_text').get().strip()).lstrip('\n ')
-
-
-        
-        
         
         item = JobscraperItem(
             url=url,
