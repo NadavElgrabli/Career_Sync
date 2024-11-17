@@ -82,8 +82,8 @@ def get_public_user_data(user):
         "experience": user.get("experience"),
         "degree": user.get("degree"),
         "skills": user.get("skills"),
-        "firstName": user.get("first_name"),
-        "lastName": user.get("last_name"),
+        "first_name": user.get("first_name"),
+        "last_name": user.get("last_name"),
     }
 def get_user(username):
     

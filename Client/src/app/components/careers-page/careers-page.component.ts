@@ -18,8 +18,9 @@ export class CareersPageComponent {
         description: 'Develop and maintain software solutions.',
         organization: 'MyCompany',
         location: 'Tel Aviv',
-        type_of_job: 'Full-time',
-        employment_type: 'Remote'
+        job_type: 'Full-time',
+        job_preference: 'Remote',
+        is_submitted: true
     },
     {
         title: 'Junior UI/UX Designer',
@@ -27,8 +28,9 @@ export class CareersPageComponent {
         description: 'Design user interfaces and experiences.',
         organization: 'MyCompany',
         location: 'Haifa',
-        type_of_job: 'Full-time',
-        employment_type: 'On-Site'
+        job_type: 'Full-time',
+        job_preference: 'On-Site',
+        is_submitted: false
     }
   ];
 
@@ -36,6 +38,5 @@ export class CareersPageComponent {
 
   ngOnInit(){
     this.user = this.sessionService.getUserFromSession();
-    console.log(this.user);
   }
 }

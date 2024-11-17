@@ -9,14 +9,8 @@ import { Job } from 'src/app/interfaces/job';
 
 export class JobCardComponent {
   @Input() job !: Job;
+
+  toggleSubmitted(job: any): void {
+    job.is_submitted = !job.is_submitted;
+  }
 }
-
-
-
-
-
-
-
-
-
-

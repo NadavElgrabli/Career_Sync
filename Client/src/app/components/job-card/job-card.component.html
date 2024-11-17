@@ -1,9 +1,12 @@
 <div class="job-card">
-    <h3>{{ job.title }}</h3>
+    <h3>
+        <input type="checkbox" class="assigned-checkbox" [(ngModel)]="job.is_submitted" />
+        {{ job.title }}
+    </h3>
     <div class="tags">
         <span class="tag">{{ job.location }}</span>
-        <span class="tag">{{ job.type_of_job }}</span>
-        <span class="tag">{{ job.employment_type }}</span>
+        <span class="tag">{{ job.job_type }}</span>
+        <span class="tag">{{ job.job_preference }}</span>
     </div>
     <a [href]="job.url" target="_blank">
         <button class="apply-now-btn">Apply Now</button>
