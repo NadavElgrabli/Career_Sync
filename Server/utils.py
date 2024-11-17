@@ -18,13 +18,8 @@ def get_user_data_from_request(data):
         "last_name": data.get("last_name"),
         "username": data.get("username"),
         "password": data.get("password"),
-        "job": data.get("job"),
-        "location": data.get("location"),
-        "full_job": data.get("full_job"),
-        "work_preference": data.get("work_preference"),
-        "experience": data.get("experience"),
-        "degree": data.get("degree"),
-        "skills": data.get("skills"),
+        "jobs": [],
+        "last_search":{}
     }
 
 

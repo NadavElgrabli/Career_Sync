@@ -5,6 +5,7 @@ from algorithm.chatbot import Chatbot
 def handle_chat_request(data, chatbot : Chatbot):
     try:
         user_message = data.get("message")
+        username = data.get("username")
         bot_response = ''
         
         if user_message == "start":
@@ -17,7 +18,7 @@ def handle_chat_request(data, chatbot : Chatbot):
         
         if 'DONE' in bot_response:
             cleaned_response = bot_response.replace('DONE', '').strip()
-            start_crawling(cleaned_response)
+            start_crawling(cleaned_response,username)
         
         return bot_response
     except Exception as e:
@@ -26,9 +27,10 @@ def handle_chat_request(data, chatbot : Chatbot):
 
 
 
-def start_crawling(cleaned_response):
+def start_crawling(cleaned_response,username):
     
     job_preference_dic = ast.literal_eval(cleaned_response)
+    job_preference_dic["username"] = username
     
     scraper = Scraper(**job_preference_dic)
     scraper.run_spiders()

@@ -1,10 +1,9 @@
 import os
-import sys
-import asyncio
 from dotenv import find_dotenv, load_dotenv
 from playwright.sync_api import sync_playwright, Locator
 import re
 import pymongo
+from controller.job_score import calculate_total_score
 
 class IndeedJobScraper:
 
@@ -13,17 +12,20 @@ class IndeedJobScraper:
         self.job = str(kwargs.get("job")).replace(' ', '+')
         self.location = str(kwargs.get('location', 'San Lorenzo')).title().replace(" ", "+")
         self.url = f"https://www.indeed.com/jobs?q={self.job}&l={self.location}&ts=1729499545404&from=searchOnHP&rq=1&rsIdx=1&fromage=last&vjk=8e448e208480d912"
+        self.username = kwargs.get("username")
+        self.kwargs = kwargs
         self.conn_to_mongo()
-        
+    
     def conn_to_mongo(self):
         load_dotenv(find_dotenv())
         mongodb_pwd = os.getenv('MONGODB_PWD')
         self.mongo_db = os.getenv('MONGODB_DB', 'Career_Sync')
         self.mongo_conn_string = f"mongodb+srv://nadavbarda:{mongodb_pwd}@cluster0.wmtsesk.mongodb.net/{self.mongo_db}?retryWrites=true&w=majority"
-        self.mongo_collection = 'jobs'
+        self.mongo_job_collection = 'jobs'
         self.client = pymongo.MongoClient(self.mongo_conn_string)
         self.db = self.client[self.mongo_db]
-        self.collection = self.db[self.mongo_collection]
+        self.job_collection = self.db[self.mongo_job_collection]
+        self.user_collection = self.db['users']
         
     def fetch_page_content(self):
         with sync_playwright() as p:
@@ -40,22 +42,63 @@ class IndeedJobScraper:
                 job_card.click()
                 job = page.locator("div.jobsearch-RightPane")
                 job_dic = self.parse_job(job,prev_title)
-                self.save_db(job_dic,prev_title)
+                self.handle_job_save(job_dic,prev_title)
                 prev_title = job_dic.get('title','')
             browser.close()
-            
+          
+          
+    def save_job_on_user(self, job_id,job_dic):
+        user = self.user_collection.find_one({"username": self.username})
+        if not user:
+            raise ValueError("User not found")
+        
+        jobs = user.get("jobs", [])
+
+        for job in jobs:
+            if job.get("job_id") == job_id:
+                return  
+        
+        candidate_profile = self.kwargs
+        # Calculate the score (implement your logic here)
+        score = calculate_total_score(candidate_profile=candidate_profile, job_data=job_dic)
+        
+        job_data = {
+            'score': score,
+            'job_id': job_id,
+            'applied': False,
+        }
+        
+        jobs.append(job_data)
+        
+        self.user_collection.update_one(
+            {"username": self.username},
+            {"$push": {"jobs": job_data}}
+        )
+
+    
+    def handle_job_save(self,job_dic, prev_title):
+        job_id = self.save_db(job_dic,prev_title)
+        self.save_job_on_user(job_id,job_dic)
+        
+        
             
     def save_db(self, job_dic, prev_title):
         if job_dic.get('title', '') == prev_title:
-            return
-        existing_item = self.collection.find_one({
+            return None
+
+        existing_item = self.job_collection.find_one({
             "title": job_dic.get("title"),
             "location": job_dic.get("location"),
-            'organization' : job_dic.get("organization"),
+            "organization": job_dic.get("organization"),
         })
+
         if existing_item:
-            return
-        self.collection.insert_one(job_dic)
+            return str(existing_item["_id"])
+        
+        result = self.job_collection.insert_one(job_dic)
+
+        return str(result.inserted_id)
+
 
         
     def remove_char(self,string :str,char_to_remove:str, count = 1):
@@ -111,7 +154,17 @@ class IndeedJobScraper:
         else:
             return 'Onsite'
 
-    
+    def extract_degree_fields(self,description):
+        
+        pattern = r"(?:bachelor's|master's|phd|doctorate)?\s*(?:degree)?\s*(?:in|of)\s+([\w\s&\-,]+)"
+        matches = re.findall(pattern, description)
+        if matches:
+            fields = [match.strip().strip('.').strip(',') for match in matches]
+            return fields  
+        else:
+            return []
+        
+        
     def parse_job(self,job: Locator, last_job_title: str) :
     
         title = job.locator("h2.jobsearch-JobInfoHeader-title").text_content().split(" - ")[0]
