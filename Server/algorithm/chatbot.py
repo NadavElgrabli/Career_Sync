@@ -69,7 +69,7 @@ class Chatbot:
                 degree_field = self.extract_degree_field(doc)
                 if degree_field != "No degree field found":
                     self.user_data['degree_field'] = degree_field
-                    return "Thank you! Let's move forward with the next step."
+                    return f"DONE {self.user_data}"
                 else:
                     return "I couldn't identify your field of study. Could you please provide a specific field?"
             
