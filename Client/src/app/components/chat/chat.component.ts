@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { Msg } from 'src/app/interfaces/msg';
 import { User } from 'src/app/interfaces/user';
 import { HttpService } from 'src/app/services/http.service';
@@ -16,7 +17,8 @@ export class ChatComponent implements OnInit {
 
   constructor(
     private httpService: HttpService,
-    private sessionService: SessionService
+    private sessionService: SessionService,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
@@ -33,17 +35,29 @@ export class ChatComponent implements OnInit {
 
   sendMessage() {
     if (this.newMessage.trim() !== '') {
-      const userMessage: Msg = { text: this.newMessage.trim(), sender: 'user' , username: this.user.username };
+      const userMessage: Msg = {
+        text: this.newMessage.trim(),
+        sender: 'user',
+        username: this.user.username
+      };
       this.messages.push(userMessage);
-
+  
       this.httpService.post<any>('chat', { message: userMessage.text, username: this.user.username }).subscribe(response => {
-        const botMessage: Msg = { text: response.response, sender: 'bot', username: this.user.username };
+        const botMessage: Msg = {
+          text: response.response,
+          sender: 'bot',
+          username: this.user.username
+        };
+        if (botMessage.text.includes('DONE')) {
+          this.router.navigate(['/careers-page']);
+        }
         this.messages.push(botMessage);
       });
-
+  
       this.newMessage = '';
     }
   }
+  
 
   isUserMessage(message: Msg): boolean {
     return message.sender === 'user';
