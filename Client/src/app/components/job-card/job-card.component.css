@@ -13,6 +13,59 @@
     align-items: center;
 }
 
+.apply-now-btn {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+}
+
+.score-progress {
+    position: relative;
+    margin-right: 20px;
+}
+
+.progress-bar {
+    width: 100%;
+    background-color: #e0e0e0;
+    height: 15px;
+    border-radius: 7.5px;
+    overflow: hidden;
+}
+
+.progress-fill {
+    background-color: #76c7c0;
+    height: 100%;
+    width: 0%;
+    transition: width 0.5s ease-in-out;
+}
+
+.assigned-checkbox{ 
+
+    
+    width: 16px;
+    height: 16px;
+    border: 2px solid #6c63ff;
+    border-radius: 3px;
+    background-color: #f0f5ff;
+    cursor: pointer;
+    display: inline-block;
+    position: relative;
+}
+.score-text {
+    margin-top: 5px;
+    font-weight: bold;
+    text-align: right;
+}
+
+
+.apply-now-btn.applied {
+    background-color: #6c757d; /* Gray background */
+    color: #d3d3d3;            /* Light gray text */
+    cursor: not-allowed;
+}
+
 .job-card h3 input[type="checkbox"] {
     appearance: none;
     margin-right: 10px;

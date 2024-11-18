@@ -1,14 +1,32 @@
 <div class="job-card">
-    <h3>
-        <input type="checkbox" class="assigned-checkbox" [(ngModel)]="job.is_submitted" />
-        {{ job.title }}
-    </h3>
-    <div class="tags">
-        <span class="tag">{{ job.location }}</span>
-        <span class="tag">{{ job.job_type }}</span>
-        <span class="tag">{{ job.job_preference }}</span>
+
+
+    
+
+    <div class="score-progress">
+        <input type="checkbox" class="assigned-checkbox" [checked]="job.applied" (change)="toggleSubmitted(job)" />
+        <div>score:</div>
+        <div class="progress-bar">
+            <div class="progress-fill" [style.width.%]="job.score"></div>
+        </div>
+        <span class="score-text">{{ job.score }}%</span>
     </div>
-    <a [href]="job.url" target="_blank">
-        <button class="apply-now-btn">Apply Now</button>
+
+    <h3>
+        {{ job.job.title }}
+    </h3>
+
+
+
+    <div class="tags">
+        <span class="tag">{{ job.job.location }}</span>
+        <span class="tag">{{ job.job.job_type }}</span>
+        <span class="tag">{{ job.job.job_preference }}</span>
+    </div>
+
+    <a [href]="job.job.url" target="_blank">
+        <button class="apply-now-btn" [ngClass]="{ 'applied': job.applied }">
+            {{ job.applied ? 'Already Applied' : 'Apply Now' }}
+        </button>
     </a>
 </div>
