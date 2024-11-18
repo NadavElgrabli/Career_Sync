@@ -11,8 +11,10 @@ class JobisjobSpider(scrapy.Spider):
         super(JobisjobSpider, self).__init__(*args, **kwargs)
         self.job = kwargs.get('job', 'Full Stack').title().replace(" ", "+")
         self.location = kwargs.get('location', 'San Lorenzo').title().replace(" ", "+")
+        self.username = kwargs.get('username', '')
         self.max_job_search = 5
-        self.jobs_scraped = 0 
+        self.jobs_scraped = 0
+        self.kwargs = kwargs
         
     def start_requests(self):
         url = f'https://www.jobisjob.com/m/search?whatInSearchBox={self.job}&whereInSearchBox={self.location}&directUserSearch=true&page=1&order='
@@ -29,7 +31,6 @@ class JobisjobSpider(scrapy.Spider):
             
             
     def parse_job(self, response):
-        
         self.jobs_scraped += 1  
         detail = response.css('ul.details li')
         
@@ -38,8 +39,12 @@ class JobisjobSpider(scrapy.Spider):
         
         title = response.css('p.title::text').get()
         url = response.css('div#offer-actions ul li a::attr(href)').get()
-        description = response.css('div#description_text').get()
+
+        description_element = response.css('div#description_text').get()
+        if (not description_element) or (not url):
+            return
         
+        description = re.sub(r'\s+', ' ', description_element.strip()).lstrip('\n ')
         
         item = JobscraperItem(
             url=url,
@@ -49,6 +54,7 @@ class JobisjobSpider(scrapy.Spider):
             location=location
         )
         yield item
+
         
 
 

@@ -10,10 +10,10 @@ class MonsterspiderSpider(scrapy.Spider):
         self.list_len = 18
         self.job = kwargs.get('job', 'Full Stack').title()
         self.type_of_job = str(kwargs.get('type_of_job', 'full_time')).upper().replace(' ', '_')
-
         self.location = kwargs.get('location', 'San Lorenzo').title()
-        self.work_preference = kwargs.get('work_preference', 'Hybrid').title()
-        self.experience = kwargs.get('experience', '1')
+        self.username = kwargs.get('username', '')
+        self.kwargs = kwargs
+        
     
     def start_requests(self):
         url = "https://appsapi.monster.io/jobs-svx-service/v2/monster/search-jobs/samsearch/en-US?apikey=AE50QWejwK4J73X1y1uNqpWRr2PmKB3S"
@@ -23,7 +23,6 @@ class MonsterspiderSpider(scrapy.Spider):
         data = {
             "jobQuery": {
                 "query": self.job,
-                "employmentTypes":[self.type_of_job],
                 "locations": [
                     {
                         "country": "us",
@@ -86,13 +85,8 @@ class MonsterspiderSpider(scrapy.Spider):
         job_item['url'] = job['url']
         job_item['description'] = job['description']
         job_item['organization'] = job['hiringOrganization']['name']
-        
-        
         job_item['location'] = self.get_job_location(job)
         
-        job_location_type = job.get('jobLocationType', 'UNKNOWN')
-        job_item['job_type'] = 'ON_SITE' if job_location_type == 'UNKNOWN' else job_location_type
-
         return job_item
 
 

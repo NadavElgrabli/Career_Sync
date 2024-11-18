@@ -21,7 +21,7 @@ export class ChatComponent implements OnInit {
 
   ngOnInit(): void {
     this.user = this.sessionService.getUserFromSession();
-    this.httpService.post<any>('chat', { message: "start" }).subscribe(response => {
+    this.httpService.post<any>('chat', { message: "start", username: this.user.username  }).subscribe(response => {
       const botMessage: Msg = { text: response.response, sender: 'bot', username: this.user.username };
       this.messages.push(botMessage);
     });

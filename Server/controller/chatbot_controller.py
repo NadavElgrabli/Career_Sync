@@ -1,22 +1,24 @@
 import ast
 from jobscraper.run_scraper import Scraper
+from algorithm.chatbot import Chatbot
 
-def handle_chat_request(data, chatbot):
+def handle_chat_request(data, chatbot : Chatbot):
     try:
         user_message = data.get("message")
+        username = data.get("username")
         bot_response = ''
         
         if user_message == "start":
             chatbot.reset_chat()
             bot_response = "Hello! Welcome to Career Sync. What job are you looking for?"
         elif user_message == "nadav":
-            bot_response = "DONE {'job': 'web developer', 'location': 'new york', 'type_of_job': 'full time', 'work_preference': 'hybrid', 'experience': '1', 'degree': True, 'degree_field': 'computer science'}"
+            bot_response = "DONE {'job': 'web developer', 'location': 'new york', 'job_type': 'full time', 'job_preference': 'onsite', 'experience': '1', 'degree': True, 'degree_field': 'computer science'}"
         else:
             bot_response = chatbot.ask_question(user_message)
         
         if 'DONE' in bot_response:
             cleaned_response = bot_response.replace('DONE', '').strip()
-            start_crawling(cleaned_response)
+            start_crawling(cleaned_response,username)
         
         return bot_response
     except Exception as e:
@@ -25,9 +27,10 @@ def handle_chat_request(data, chatbot):
 
 
 
-def start_crawling(cleaned_response):
+def start_crawling(cleaned_response,username):
     
     job_preference_dic = ast.literal_eval(cleaned_response)
+    job_preference_dic["username"] = username
     
     scraper = Scraper(**job_preference_dic)
     scraper.run_spiders()

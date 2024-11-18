@@ -1,10 +1,9 @@
 import os
-import sys
-import asyncio
 from dotenv import find_dotenv, load_dotenv
 from playwright.sync_api import sync_playwright, Locator
 import re
 import pymongo
+from controller.job_score import calculate_total_score
 
 class IndeedJobScraper:
 
@@ -13,17 +12,20 @@ class IndeedJobScraper:
         self.job = str(kwargs.get("job")).replace(' ', '+')
         self.location = str(kwargs.get('location', 'San Lorenzo')).title().replace(" ", "+")
         self.url = f"https://www.indeed.com/jobs?q={self.job}&l={self.location}&ts=1729499545404&from=searchOnHP&rq=1&rsIdx=1&fromage=last&vjk=8e448e208480d912"
+        self.username = kwargs.get("username")
+        self.kwargs = kwargs
         self.conn_to_mongo()
-        
+    
     def conn_to_mongo(self):
         load_dotenv(find_dotenv())
         mongodb_pwd = os.getenv('MONGODB_PWD')
         self.mongo_db = os.getenv('MONGODB_DB', 'Career_Sync')
         self.mongo_conn_string = f"mongodb+srv://nadavbarda:{mongodb_pwd}@cluster0.wmtsesk.mongodb.net/{self.mongo_db}?retryWrites=true&w=majority"
-        self.mongo_collection = 'jobs'
+        self.mongo_job_collection = 'jobs'
         self.client = pymongo.MongoClient(self.mongo_conn_string)
         self.db = self.client[self.mongo_db]
-        self.collection = self.db[self.mongo_collection]
+        self.job_collection = self.db[self.mongo_job_collection]
+        self.user_collection = self.db['users']
         
     def fetch_page_content(self):
         with sync_playwright() as p:
@@ -40,23 +42,65 @@ class IndeedJobScraper:
                 job_card.click()
                 job = page.locator("div.jobsearch-RightPane")
                 job_dic = self.parse_job(job,prev_title)
-                self.save_db(job_dic,prev_title)
+                self.handle_job_save(job_dic,prev_title)
                 prev_title = job_dic.get('title','')
             browser.close()
-            
+          
+          
+    def save_job_on_user(self, job_id,job_dic):
+        user = self.user_collection.find_one({"username": self.username})
+        if not user:
+            raise ValueError("User not found")
+        
+        jobs = user.get("jobs", [])
+
+        for job in jobs:
+            if job.get("job_id") == job_id:
+                return  
+        
+        candidate_profile = self.kwargs
+        
+        score = calculate_total_score(candidate_profile=candidate_profile, job_data=job_dic)
+        
+        job_data = {
+            'score': score,
+            'job_id': job_id,
+            'applied': False,
+        }
+        
+        jobs.append(job_data)
+        
+        self.user_collection.update_one(
+            {"username": self.username},
+            {"$push": {"jobs": job_data}}
+        )
+
+    
+    def handle_job_save(self,job_dic, prev_title):
+        
+        if job_dic.get('title', '') == prev_title:
+            return None
+        job_id = self.save_db(job_dic,prev_title)
+        self.save_job_on_user(job_id,job_dic)
+        
+        
             
     def save_db(self, job_dic, prev_title):
-        if job_dic.get('title', '') == prev_title:
-            return
-        existing_item = self.collection.find_one({
+        
+
+        existing_item = self.job_collection.find_one({
             "title": job_dic.get("title"),
             "location": job_dic.get("location"),
-            "job_type": job_dic.get("job_type"),
-            'organization' : job_dic.get("organization"),
+            "organization": job_dic.get("organization"),
         })
+
         if existing_item:
-            return
-        self.collection.insert_one(job_dic)
+            return str(existing_item["_id"])
+        
+        result = self.job_collection.insert_one(job_dic)
+
+        return str(result.inserted_id)
+
 
         
     def remove_char(self,string :str,char_to_remove:str, count = 1):
@@ -94,14 +138,42 @@ class IndeedJobScraper:
         if description_element.count() > 0:
             html_content = description_element.inner_html()
             text_content = re.sub('<[^<]+?>', '', html_content)
-            return text_content.strip().lower()
+            return text_content.strip()
         return ""
     
     def get_job_organization(self, job):
         organization_element = job.locator('[data-testid="inlineHeader-companyName"]')
         return organization_element.inner_text()
 
+    def extract_work_preference(self,description):
     
+        if re.search(r'\b(remote|work from home|telecommute|fully remote|anywhere)\b', description):
+            return 'Remote'
+        elif re.search(r'\b(on-site|on site|office-based|in-office|in office)\b', description):
+            return 'Onsite'
+        elif re.search(r'\b(hybrid|flexible work|partially remote)\b', description):
+            return 'Hybrid'
+        else:
+            return 'Onsite'
+
+    def extract_degree_fields(self,description):
+        
+        pattern = r"(?:bachelor's|master's|phd|doctorate)?\s*(?:degree)?\s*(?:in|of)\s+([\w\s&\-,]+)"
+        matches = re.findall(pattern, description)
+        if matches:
+            fields = [match.strip().strip('.').strip(',') for match in matches]
+            return fields  
+        else:
+            return []
+    
+    def extract_experience(self,description):
+        matches = re.findall(r'(\d+)\+?\s+years? of experience', description)
+        if matches:
+            return int(matches[0])
+        else:
+            return None  
+    
+        
     def parse_job(self,job: Locator, last_job_title: str) :
     
         title = job.locator("h2.jobsearch-JobInfoHeader-title").text_content().split(" - ")[0]
@@ -112,15 +184,20 @@ class IndeedJobScraper:
         job_type = self.get_job_type(job)
         location = self.get_job_location(job)
         url = self.get_job_url(job)
-        description = self.get_job_description(job)
         organization = self.get_job_organization(job)
+        description = self.get_job_description(job)
+        lower_description = description.lower()
+        job_preference = self.extract_work_preference(lower_description)
+        experience = self.extract_experience(lower_description)
         job_dic = {
             'title' : title,
             'job_type' : job_type,
             'location' : location,
             'url' : url,
             'description' : description,
-            'organization':organization
+            'organization':organization,
+            'job_preference' : job_preference,
+            'experience' : experience
         }
         
         return job_dic
