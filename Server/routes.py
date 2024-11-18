@@ -3,7 +3,7 @@ from middleware.auth_middleware import token_required
 from controller.chatbot_controller import handle_chat_request
 from algorithm.chatbot import Chatbot
 from token_utils import generate_token
-from utils import get_user_jobs, insert_new_user, login_user
+from utils import get_job_from_user, get_user_jobs, insert_new_user, login_user, update_job_in_user
 from flask_cors import CORS
 app = Blueprint('routes', __name__)
 CORS(app)
@@ -64,11 +64,8 @@ need to add token warper need to check fisrt the client side how he send data
 '''
 
 @app.route('/chat', methods=['POST'])
-# @token_required
 def chat():
     try:
-        #need to add the curr user
-        
         data = request.json
         if not data:
             return jsonify({"message": "Invalid input data"}), 400
@@ -82,20 +79,46 @@ def chat():
         print(f"Error in /chat route: {e}")
         return jsonify({"message": "Internal Server Error"}), 500
 
-@app.route('/jobs',methods=['POST'])
-# @token_required
+
+
+@app.route('/jobs',methods=['GET'])
 def get_jobs():
     
-    username = request.user
+    data = request.json
+    if not data :
+        return jsonify({"message": "Invalid input data"}), 400
+    username = data.get("username")
     jobs = get_user_jobs(username)
     
     if not jobs:
         return jsonify({"message": "No jobs found"}), 404 
-    
-    for job in jobs:
-        job["_id"] = str(job["_id"])
-    
+
     return jsonify({
         "message": "Jobs found",
         "jobs": jobs
     }), 200  
+    
+
+@app.route('/jobs/<id>', methods=['PUT'])
+def change_job_applied_status(id):
+    data = request.get_json()
+    if not data:
+        return jsonify({"error": "Invalid JSON data"}), 400
+
+    username = data.get("username")
+    if not username:
+        return jsonify({"error": "Username is required"}), 400
+
+    job = get_job_from_user(username, id)
+    if not job:
+        return jsonify({"error": "Job not found"}), 404
+
+    job["applied"] = not job.get("applied", False)
+
+    success = update_job_in_user(username, job)
+    if success:
+        return jsonify({"message": "Job updated successfully"}), 200
+    else:
+        return jsonify({"error": "Failed to update job"}), 500
+
+    
