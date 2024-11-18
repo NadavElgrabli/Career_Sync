@@ -24,6 +24,18 @@ export class JobCardComponent {
     
   }
 
+  getScoreClass(score: number): string {
+    if (score >= 80) {
+        return 'badge-high';
+    } else if (score >= 50) {
+        return 'badge-medium';
+    } else {
+        return 'badge-low';
+    }
+}
+
+
+
   toggleSubmitted(job: UserJob): void {
     this.httpService.put<any>(`jobs/${job.job_id}`, { username: this.user.username }).subscribe(res => {
         job.applied = res.job.applied;
