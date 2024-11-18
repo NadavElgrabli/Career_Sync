@@ -158,6 +158,23 @@ def authenticate_user(user, password):
 
 
 
+
+def convert_objectids_to_strings(obj):
+    if isinstance(obj, list):
+        return [convert_objectids_to_strings(item) for item in obj]
+    elif isinstance(obj, dict):
+        new_obj = {}
+        for k, v in obj.items():
+            if isinstance(v, ObjectId):
+                new_obj[k] = str(v)
+            else:
+                new_obj[k] = convert_objectids_to_strings(v)
+        return new_obj
+    else:
+        return obj
+
+
+
 def get_user_jobs(username):
     user = db.users.find_one({"username": username})
     if user is None:
@@ -175,20 +192,28 @@ def get_user_jobs(username):
                 continue  
     
     if not job_ids:
-        return sorted_jobs  
-    
+        return sorted_jobs  # No job_ids to process
     
     jobs_data_cursor = db.jobs.find({"_id": {"$in": job_ids}})
     jobs_data = list(jobs_data_cursor)
     
+    # Create a mapping from job_id (string) to job data
     jobs_data_dict = {str(job['_id']): job for job in jobs_data}
     
+    # Attach full job data to each job in sorted_jobs
     for job in sorted_jobs:
         job_id_str = job.get('job_id')
         job_data = jobs_data_dict.get(job_id_str)
-        job["job"] = job_data
+        if job_data:
+            # Convert ObjectId in job_data to string
+            job_data_processed = convert_objectids_to_strings(job_data)
+            job["job"] = job_data_processed
+        else:
+            job["job"] = None  # Handle missing job data as needed
     
-    return sorted_jobs
+    # Convert any remaining ObjectId instances in sorted_jobs
+    sorted_jobs_processed = convert_objectids_to_strings(sorted_jobs)
+    return sorted_jobs_processed
 
 
 

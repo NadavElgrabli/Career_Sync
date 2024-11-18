@@ -1,7 +1,9 @@
+import { HttpClient } from '@angular/common/http';
 import { Component } from '@angular/core';
 import { AppComponent } from 'src/app/app.component';
-import { Job } from 'src/app/interfaces/job';
+import {  UserJob } from 'src/app/interfaces/job';
 import { SessionService } from 'src/app/services/sessionService';
+import { HttpService } from 'src/app/services/http.service';
 import { User } from 'src/app/user';
 
 @Component({
@@ -10,33 +12,17 @@ import { User } from 'src/app/user';
   styleUrls: ['./careers-page.component.css']
 })
 export class CareersPageComponent {
-  user!: User;
-  jobs: Job[] = [
-    {
-        title: 'Senior Software Engineer',
-        url: 'https://example.com/apply',
-        description: 'Develop and maintain software solutions.',
-        organization: 'MyCompany',
-        location: 'Tel Aviv',
-        job_type: 'Full-time',
-        job_preference: 'Remote',
-        is_submitted: true
-    },
-    {
-        title: 'Junior UI/UX Designer',
-        url: 'https://example.com/apply',
-        description: 'Design user interfaces and experiences.',
-        organization: 'MyCompany',
-        location: 'Haifa',
-        job_type: 'Full-time',
-        job_preference: 'On-Site',
-        is_submitted: false
-    }
-  ];
 
-  constructor(private sessionService: SessionService, private appComponentParent:AppComponent,) { }
+ 
+  user!: User;
+  jobs!: UserJob[] 
+
+  constructor(private sessionService: SessionService, private appComponentParent:AppComponent,private httpService: HttpService) { }
 
   ngOnInit(){
     this.user = this.sessionService.getUserFromSession();
+    this.httpService.post<any>('jobs',{username: this.user.username}).subscribe(response => {
+      this.jobs = response.jobs;
+    });
   }
 }

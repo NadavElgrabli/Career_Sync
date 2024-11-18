@@ -81,7 +81,7 @@ def chat():
 
 
 
-@app.route('/jobs',methods=['GET'])
+@app.route('/jobs',methods=['POST'])
 def get_jobs():
     
     data = request.json
@@ -92,7 +92,6 @@ def get_jobs():
     
     if not jobs:
         return jsonify({"message": "No jobs found"}), 404 
-
     return jsonify({
         "message": "Jobs found",
         "jobs": jobs
@@ -117,8 +116,9 @@ def change_job_applied_status(id):
 
     success = update_job_in_user(username, job)
     if success:
-        return jsonify({"message": "Job updated successfully"}), 200
+        return jsonify({"message": "Job updated successfully",
+                        "job":job}), 200
     else:
-        return jsonify({"error": "Failed to update job"}), 500
+        return jsonify({"error": "Failed to update job","job":job}), 500
 
     
