@@ -59,7 +59,7 @@ class IndeedJobScraper:
                 return  
         
         candidate_profile = self.kwargs
-        # Calculate the score (implement your logic here)
+        
         score = calculate_total_score(candidate_profile=candidate_profile, job_data=job_dic)
         
         job_data = {
@@ -77,14 +77,16 @@ class IndeedJobScraper:
 
     
     def handle_job_save(self,job_dic, prev_title):
+        
+        if job_dic.get('title', '') == prev_title:
+            return None
         job_id = self.save_db(job_dic,prev_title)
         self.save_job_on_user(job_id,job_dic)
         
         
             
     def save_db(self, job_dic, prev_title):
-        if job_dic.get('title', '') == prev_title:
-            return None
+        
 
         existing_item = self.job_collection.find_one({
             "title": job_dic.get("title"),
@@ -163,7 +165,14 @@ class IndeedJobScraper:
             return fields  
         else:
             return []
-        
+    
+    def extract_experience(self,description):
+        matches = re.findall(r'(\d+)\+?\s+years? of experience', description)
+        if matches:
+            return int(matches[0])
+        else:
+            return None  
+    
         
     def parse_job(self,job: Locator, last_job_title: str) :
     
@@ -175,9 +184,11 @@ class IndeedJobScraper:
         job_type = self.get_job_type(job)
         location = self.get_job_location(job)
         url = self.get_job_url(job)
-        description = self.get_job_description(job)
         organization = self.get_job_organization(job)
-        job_preference = self.extract_work_preference(description.lower())
+        description = self.get_job_description(job)
+        lower_description = description.lower()
+        job_preference = self.extract_work_preference(lower_description)
+        experience = self.extract_experience(lower_description)
         job_dic = {
             'title' : title,
             'job_type' : job_type,
@@ -185,7 +196,8 @@ class IndeedJobScraper:
             'url' : url,
             'description' : description,
             'organization':organization,
-            'job_preference' : job_preference
+            'job_preference' : job_preference,
+            'experience' : experience
         }
         
         return job_dic

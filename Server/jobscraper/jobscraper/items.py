@@ -9,3 +9,4 @@ class JobscraperItem(scrapy.Item):
     location = scrapy.Field()
     job_type = scrapy.Field()
     job_preference = scrapy.Field()
+    experience = scrapy.Field()
