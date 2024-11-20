@@ -1,17 +1,21 @@
 <div class="job-card">
     <div class="score-progress">
-      <input
-        type="checkbox"
-        class="assigned-checkbox"
-        [checked]="job.applied"
-        (change)="toggleSubmitted(job)"
-      />
-      <div class="score-label">Score:</div>
-      <div class="progress-bar">
-        <div class="progress-fill" [style.width.%]="job.score"></div>
+        <input
+          type="checkbox"
+          class="assigned-checkbox"
+          [checked]="job.applied"
+          (change)="toggleSubmitted(job)"
+        />
+        <div class="score-label">Score:</div>
+        <div class="progress-bar">
+          <div
+            class="progress-fill"
+            [style.width.%]="job.score"
+            [style.background-color]="getProgressColor(job.score)"
+          ></div>
+        </div>
+        <span class="score-text">{{ job.score }}%</span>
       </div>
-      <span class="score-text">{{ job.score }}%</span>
-    </div>
   
     <h3 class="job-title">{{ job.job.title }}</h3>
   

@@ -31,17 +31,15 @@ export class JobCardComponent {
     
   }
 
-  getScoreClass(score: number): string {
+  getProgressColor(score: number): string {
     if (score >= 80) {
-        return 'badge-high';
+      return '#4caf50'; // Green
     } else if (score >= 50) {
-        return 'badge-medium';
+      return '#ffeb3b'; // Yellow
     } else {
-        return 'badge-low';
+      return '#f44336'; // Red
     }
-}
-
-
+  }
 
   toggleSubmitted(job: UserJob): void {
     this.httpService.put<any>(`jobs/${job.job_id}`, { username: this.user.username }).subscribe(res => {
