@@ -1,17 +1,13 @@
+<!-- careers-page.component.html -->
 <div *ngIf="user">
     <div class="career-page">
         <header class="career-header">
             <h1>Careers</h1>
         </header>
 
-            <!-- <div class="search-bar">
-            <input type="text" placeholder="Job Title" class="search-input" />
-            <button class="search-btn">Search</button>
-        </div> -->
-
         <div class="cards-container">
             <div *ngFor="let job of jobs" class="job-card">
-                <app-job-card [job]="job"></app-job-card>
+                <app-job-card [job]="job" (removeJob)="removeJob($event)"></app-job-card>
             </div>
         </div>
     </div>

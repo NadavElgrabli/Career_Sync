@@ -1,8 +1,10 @@
-import { Component, Input } from '@angular/core';
-import { Job, UserJob } from 'src/app/interfaces/job';
+import { Component, Input , Output, EventEmitter} from '@angular/core';
+import { UserJob } from 'src/app/interfaces/job';
 import { HttpService } from 'src/app/services/http.service';
 import { SessionService } from 'src/app/services/sessionService';
 import { User } from 'src/app/user';
+
+
 
 @Component({
   selector: 'app-job-card',
@@ -13,6 +15,11 @@ import { User } from 'src/app/user';
 export class JobCardComponent {
   @Input() job !: UserJob;
   user!: User;
+  @Output() removeJob = new EventEmitter<string>();
+
+  onRemoveJob(): void {
+    this.removeJob.emit(this.job.job_id);
+  }
 
   constructor(
     private httpService: HttpService,
