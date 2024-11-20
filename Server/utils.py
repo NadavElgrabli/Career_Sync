@@ -93,6 +93,17 @@ def get_job_from_user(username, job_id):
             return job
     return None
 
+def remove_job_from_user_db(username, job_id):
+    result = db.users.update_one(
+        {"username": username},
+        {"$pull": {"jobs": {"job_id": job_id}}}
+    )
+    if result.modified_count > 0:
+        return True  
+    else:
+        return False
+
+
 def update_job_in_user(username, job):
     """
     Updates a job in the user's list of jobs.

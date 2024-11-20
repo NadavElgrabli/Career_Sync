@@ -3,8 +3,8 @@ from middleware.auth_middleware import token_required
 from controller.chatbot_controller import handle_chat_request
 from algorithm.chatbot import Chatbot
 from token_utils import generate_token
-from utils import get_job_from_user, get_user_jobs, insert_new_user, login_user, update_job_in_user
-from flask_cors import CORS
+from utils import get_job_from_user, get_user_jobs, insert_new_user, login_user, remove_job_from_user_db, update_job_in_user
+from flask_cors import CORS, cross_origin
 app = Blueprint('routes', __name__)
 CORS(app)
 
@@ -120,5 +120,24 @@ def change_job_applied_status(id):
                         "job":job}), 200
     else:
         return jsonify({"error": "Failed to update job","job":job}), 500
+
+@app.route('/jobs/<id>', methods=['POST'])
+def delete_job_from_user(id):
+    
+    data = request.get_json()
+    if not data:
+        return jsonify({"error": "Invalid JSON data"}), 400
+
+    username = data.get("username")
+    
+    if not username:
+        return jsonify({"error": "Username is required"}), 400
+
+    result = remove_job_from_user_db(username, id)
+
+    if result:
+        return jsonify({"message": "successfully delete the job"}), 200
+    else:
+        return jsonify({"message": "Failed to delete the job"}), 500
 
     

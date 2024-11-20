@@ -1,116 +1,98 @@
 .job-card {
+    background-color: #ffffff;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
     padding: 20px;
-    border-radius: 10px;
+    margin-bottom: 20px;
+    position: relative;
+  }
+  
+  .score-progress {
+    display: flex;
+    align-items: center;
     margin-bottom: 15px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.job-card h3 {
-    margin: 0;
-    display: flex;
-    align-items: center;
-}
-
-.apply-now-btn {
-    background-color: #007bff;
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    cursor: pointer;
-}
-
-.score-progress {
-    position: relative;
-    margin-right: 20px;
-}
-
-.progress-bar {
-    width: 100%;
-    background-color: #e0e0e0;
-    height: 15px;
-    border-radius: 7.5px;
-    overflow: hidden;
-}
-
-.progress-fill {
-    background-color: #76c7c0;
-    height: 100%;
-    width: 0%;
-    transition: width 0.5s ease-in-out;
-}
-
-.assigned-checkbox{ 
-
-    
-    width: 16px;
-    height: 16px;
-    border: 2px solid #6c63ff;
-    border-radius: 3px;
-    background-color: #f0f5ff;
-    cursor: pointer;
-    display: inline-block;
-    position: relative;
-}
-.score-text {
-    margin-top: 5px;
-    font-weight: bold;
-    text-align: right;
-}
-
-
-.apply-now-btn.applied {
-    background-color: #6c757d; /* Gray background */
-    color: #d3d3d3;            /* Light gray text */
-    cursor: not-allowed;
-}
-
-.job-card h3 input[type="checkbox"] {
-    appearance: none;
+    margin-right: 150px;
+  }
+  
+  .assigned-checkbox {
     margin-right: 10px;
-    width: 16px;
-    height: 16px;
-    border: 2px solid #6c63ff;
-    border-radius: 3px;
-    background-color: #f0f5ff;
-    cursor: pointer;
-    display: inline-block;
-    position: relative;
-}
-
-.job-card h3 input[type="checkbox"]:checked {
-    background-color: #6c63ff;
-    border-color: #6c63ff;
-}
-
-.job-card h3 input[type="checkbox"]:checked::after {
-    content: '✔';
-    color: white;
-    font-size: 12px;
+  }
+  
+  .score-label {
+    font-weight: bold;
+    margin-right: 5px;
+  }
+  
+  .progress-bar {
+    background-color: #f0f0f0;
+    border-radius: 5px;
+    flex: 1;
+    margin: 0 10px;
+    overflow: hidden;
+    height: 10px;
+  }
+  
+  .progress-fill {
+    background-color: #4caf50;
+    height: 100%;
+    width: 0;
+    transition: width 0.3s ease;
+  }
+  
+  .score-text {
+    font-weight: bold;
+  }
+  
+  .job-title {
+    font-size: 1.5em;
+    margin: 10px 0;
+  }
+  
+  .remove-job-btn {
     position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-}
-
-.tags {
-    display: flex;
-    gap: 5px;
-}
-
-.tag {
-    background-color: #f0f5ff;
-    color: #6c63ff;
+    top: 20px;
+    right: 20px;
+    background-color: #ff4d4d;
+    border: none;
+    color: #ffffff;
+    padding: 8px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  .remove-job-btn:hover {
+    background-color: #e60000;
+  }
+  
+  .tags {
+    margin: 15px 0;
+  }
+  
+  .tag {
+    display: inline-block;
+    background-color: #e0e0e0;
+    color: #333333;
     padding: 5px 10px;
     border-radius: 15px;
-}
-
-.apply-now-btn {
-    background-color: #6c63ff;
-    color: white;
+    margin-right: 5px;
+    font-size: 0.9em;
+  }
+  
+  .apply-now-btn {
+    background-color: #2196f3;
     border: none;
+    color: #ffffff;
     padding: 10px 20px;
-    border-radius: 5px;
+    border-radius: 4px;
     cursor: pointer;
-}
+  }
+  
+  .apply-now-btn.applied {
+    background-color: #9e9e9e;
+    cursor: not-allowed;
+  }
+  
+  .apply-now-btn:hover:not(.applied) {
+    background-color: #1976d2;
+  }
+  

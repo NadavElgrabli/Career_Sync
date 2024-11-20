@@ -1,32 +1,32 @@
 <div class="job-card">
-
-
-    
-
     <div class="score-progress">
-        <input type="checkbox" class="assigned-checkbox" [checked]="job.applied" (change)="toggleSubmitted(job)" />
-        <div>score:</div>
-        <div class="progress-bar">
-            <div class="progress-fill" [style.width.%]="job.score"></div>
-        </div>
-        <span class="score-text">{{ job.score }}%</span>
+      <input
+        type="checkbox"
+        class="assigned-checkbox"
+        [checked]="job.applied"
+        (change)="toggleSubmitted(job)"
+      />
+      <div class="score-label">Score:</div>
+      <div class="progress-bar">
+        <div class="progress-fill" [style.width.%]="job.score"></div>
+      </div>
+      <span class="score-text">{{ job.score }}%</span>
     </div>
-
-    <h3>
-        {{ job.job.title }}
-    </h3>
-
-
-
+  
+    <h3 class="job-title">{{ job.job.title }}</h3>
+  
+    <button class="remove-job-btn" (click)="onRemoveJob()">Remove Job</button>
+  
     <div class="tags">
-        <span class="tag">{{ job.job.location }}</span>
-        <span class="tag">{{ job.job.job_type }}</span>
-        <span class="tag">{{ job.job.job_preference }}</span>
+      <span class="tag">{{ job.job.location }}</span>
+      <span class="tag">{{ job.job.job_type }}</span>
+      <span class="tag">{{ job.job.job_preference }}</span>
     </div>
-
+  
     <a [href]="job.job.url" target="_blank">
-        <button class="apply-now-btn" [ngClass]="{ 'applied': job.applied }">
-            {{ job.applied ? 'Already Applied' : 'Apply Now' }}
-        </button>
+      <button class="apply-now-btn" [ngClass]="{ applied: job.applied }">
+        {{ job.applied ? 'Already Applied' : 'Apply Now' }}
+      </button>
     </a>
-</div>
+  </div>
+  

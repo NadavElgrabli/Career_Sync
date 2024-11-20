@@ -22,7 +22,8 @@ export class HttpService {
     return this.http.put<T>(this.baseUrl + url, data);
   }
 
-  delete<T>(url: string): Observable<T> {
-    return this.http.delete<T>(this.baseUrl + url);
+  delete<T>(url: string, options?: any) {
+    console.log(options);
+    return this.http.delete<T>(url, options);
   }
 }
