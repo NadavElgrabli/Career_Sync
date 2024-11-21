@@ -1,36 +1,34 @@
 <div class="job-card">
-    <div class="score-progress">
-        <input
-          type="checkbox"
-          class="assigned-checkbox"
-          [checked]="job.applied"
-          (change)="toggleSubmitted(job)"
-        />
-        <div class="score-label">Score:</div>
-        <div class="progress-bar">
-          <div
-            class="progress-fill"
-            [style.width.%]="job.score"
-            [style.background-color]="getProgressColor(job.score)"
-          ></div>
-        </div>
-        <span class="score-text">{{ job.score }}%</span>
+  <div class="score-progress">
+
+    <div class="score-label">Score:</div>
+    <div class="progress-bar">
+      <div class="progress-fill" [style.width.%]="job.score" [style.background-color]="getProgressColor(job.score)">
       </div>
-  
-    <h3 class="job-title">{{ job.job.title }}</h3>
-  
-    <button class="remove-job-btn" (click)="onRemoveJob()">Remove Job</button>
-  
-    <div class="tags">
-      <span class="tag">{{ job.job.location }}</span>
-      <span class="tag">{{ job.job.job_type }}</span>
-      <span class="tag">{{ job.job.job_preference }}</span>
     </div>
-  
-    <a [href]="job.job.url" target="_blank">
+    <span class="score-text">{{ job.score }}%</span>
+  </div>
+
+  <h3 class="job-title">{{ job.job.title }}</h3>
+
+  <button class="remove-job-btn" (click)="onRemoveJob()">Remove Job</button>
+
+  <div class="tags">
+    <span class="tag">{{ job.job.location }}</span>
+    <span class="tag">{{ job.job.job_type }}</span>
+    <span class="tag">{{ job.job.job_preference }}</span>
+  </div>
+
+
+  <div class="applied-container">
+    <a [href]="job.job.url" target="_blank" class="">
       <button class="apply-now-btn" [ngClass]="{ applied: job.applied }">
         {{ job.applied ? 'Already Applied' : 'Apply Now' }}
       </button>
     </a>
+    <span class="applied-text"> Did you applied?
+      <input type="checkbox" class="applied-checkbox" [checked]="job.applied" (change)="toggleSubmitted(job)" />
+    </span>
   </div>
-  
+
+</div>
