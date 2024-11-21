@@ -13,6 +13,8 @@ import { HttpHeaders } from '@angular/common/http';
 export class CareersPageComponent implements OnInit {
   user!: User;
   jobs!: UserJob[];
+  filteredJobs!: UserJob[];
+  filterOption: string = 'all';
 
   constructor(
     private sessionService: SessionService,
@@ -25,12 +27,24 @@ export class CareersPageComponent implements OnInit {
       .post<any>('jobs', { username: this.user.username })
       .subscribe((response) => {
         this.jobs = response.jobs;
+        this.filteredJobs = [...this.jobs]; 
       });
+  }
+
+  filterJobs(): void {
+    if (this.filterOption === 'applied') {
+      this.filteredJobs = this.jobs.filter((job) => job.applied);
+    } else if (this.filterOption === 'not-applied') {
+      this.filteredJobs = this.jobs.filter((job) => !job.applied);
+    } else {
+      this.filteredJobs = [...this.jobs];
+    }
   }
 
   removeJob(job_id: string): void {
     this.jobs = this.jobs.filter((job) => job.job_id !== job_id);
-
+    this.filterJobs();
+    
     const headers = new HttpHeaders({
       username: this.user.username,
     });

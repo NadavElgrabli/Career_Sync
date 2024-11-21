@@ -43,7 +43,7 @@
 }
 
 .job-title {
-  font-size: 1.5em;
+  font-size: 2em;
   margin: 10px 0;
 }
 
@@ -93,4 +93,25 @@
 
 .apply-now-btn:hover:not(.applied) {
   background-color: #1976d2;
+}
+
+
+.applied-checkbox {
+  margin-left: 10px;
+  cursor: pointer;
+  width: 18px;
+  height: 18px;
+  accent-color: #007bff; 
+  transform: scale(1.2); 
+}
+
+.applied-container {
+  display: flex;
+  align-items: center; 
+  justify-content: space-between; 
+  padding-top: 1em;
+}
+
+.applied-text {
+  font-weight: bold;
 }

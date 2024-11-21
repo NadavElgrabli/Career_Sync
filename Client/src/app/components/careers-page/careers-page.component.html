@@ -1,14 +1,23 @@
-<!-- careers-page.component.html -->
 <div *ngIf="user">
     <div class="career-page">
-        <header class="career-header">
-            <h1>Careers</h1>
-        </header>
-
-        <div class="cards-container">
-            <div *ngFor="let job of jobs" class="job-card">
-                <app-job-card [job]="job" (removeJob)="removeJob($event)"></app-job-card>
-            </div>
+      <header class="career-header">
+        <h1>Careers</h1>
+        <div class="filter-container">
+          <label for="filter">Filter:</label>
+          <select id="filter" [(ngModel)]="filterOption" (change)="filterJobs()">
+            <option value="all">All</option>
+            <option value="not-applied">Not Applied</option>
+            <option value="applied">Applied</option>
+            
+          </select>
         </div>
+      </header>
+  
+      <div class="cards-container">
+        <div *ngFor="let job of filteredJobs" class="job-card">
+          <app-job-card [job]="job" (removeJob)="removeJob($event)"></app-job-card>
+        </div>
+      </div>
     </div>
-</div>
+  </div>
+  

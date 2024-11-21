@@ -113,3 +113,47 @@
         }
     }
 }
+
+
+.filter-container {
+    display: flex;
+    align-items: center;
+    gap: 10px; /* Space between label and dropdown */
+    margin-bottom: 20px; /* Space below the filter container */
+    padding: 10px;
+    background-color: #f9f9f9; /* Light background for contrast */
+    border: 1px solid #ddd; /* Subtle border */
+    border-radius: 5px; /* Rounded corners */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Soft shadow */
+  }
+  
+  .filter-container label {
+    font-size: 16px;
+    font-weight: bold;
+    color: #333; /* Darker text for readability */
+  }
+  
+  .filter-container select {
+    padding: 5px 10px;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    outline: none;
+    transition: border-color 0.3s;
+  }
+  
+  .filter-container select:focus {
+    border-color: #007bff; /* Highlight border on focus */
+  }
+  
+  @media (max-width: 768px) {
+    .filter-container {
+      flex-direction: column; /* Stack elements vertically on smaller screens */
+      align-items: flex-start; /* Align items to the start */
+    }
+  
+    .filter-container label {
+      margin-bottom: 5px; /* Add space below the label */
+    }
+  }
+  
