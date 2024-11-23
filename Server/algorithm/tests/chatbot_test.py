@@ -545,7 +545,7 @@ for answer in test_answers:
     doc = nlp(answer)
     print_tokens(doc)
     print("--------------------------------------------------------------------------")
-    extract_job(doc)
+    extract_experience(doc)
     print("--------------------------------------------------------------------------")
 # print("number of errors:" + str(errors))
 
