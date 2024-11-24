@@ -45,7 +45,6 @@ class IndeedJobScraper:
 
                 await job_card.scroll_into_view_if_needed(timeout=5000)
                 await job_card.click()
-                time.sleep(0.5)
                 job = page.locator("div.jobsearch-RightPane")
                 try:
                     await job.wait_for(state='visible', timeout=2000)
