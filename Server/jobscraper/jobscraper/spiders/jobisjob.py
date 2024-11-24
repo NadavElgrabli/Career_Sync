@@ -1,7 +1,7 @@
 import re
 import scrapy
 from jobscraper.jobscraper.items import JobscraperItem
-
+from urllib.parse import urljoin
 
 class JobisjobSpider(scrapy.Spider):
     name = 'jobisjob'
@@ -12,7 +12,7 @@ class JobisjobSpider(scrapy.Spider):
         self.job = kwargs.get('job', 'Full Stack').title().replace(" ", "+")
         self.location = kwargs.get('location', 'San Lorenzo').title().replace(" ", "+")
         self.username = kwargs.get('username', '')
-        self.max_job_search = 5
+        self.max_job_search = 10
         self.jobs_scraped = 0
         self.kwargs = kwargs
         
@@ -25,6 +25,7 @@ class JobisjobSpider(scrapy.Spider):
         
         job_links = response.css('ul.list2 li a::attr(href)').getall()
         for link in job_links:
+            
             if self.jobs_scraped >= self.max_job_search:
                 return
             yield response.follow(link, self.parse_job)
@@ -38,12 +39,12 @@ class JobisjobSpider(scrapy.Spider):
         location = response.css('ul.details li p.text::text')[1].get() if len(detail) > 1 else None
         
         title = response.css('p.title::text').get()
-        url = response.css('div#offer-actions ul li a::attr(href)').get()
-
+        raw_url = response.css('div#offer-actions ul li a::attr(href)').get()
+        url = urljoin(response.url, raw_url) if raw_url else response.url
         description_element = response.css('div#description_text').get()
-        if (not description_element) or (not url):
+        if (not description_element):
+            print("*******************wow wowowowowowo")
             return
-        
         description = re.sub(r'\s+', ' ', description_element.strip()).lstrip('\n ')
         
         item = JobscraperItem(
