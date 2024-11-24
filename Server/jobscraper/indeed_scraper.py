@@ -55,6 +55,8 @@ class IndeedJobScraper:
                     break
 
                 job_dic = await self.parse_job(job, prev_title)
+                if job_dic.get('url','') == '' :
+                    continue
                 self.handle_job_save(job_dic, prev_title)
                 prev_title = job_dic.get('title', '')
 
@@ -108,8 +110,11 @@ class IndeedJobScraper:
         return ""
 
     async def get_job_url(self, job: Locator) -> str:
-        btn = job.locator("div#applyButtonLinkContainer button")
-        url = await btn.get_attribute('href')
+        try:
+            btn = job.locator("div#applyButtonLinkContainer button")
+            url = await btn.get_attribute('href',timeout=1000)
+        except:
+            url = ''
         return url
 
     async def get_job_description(self, job: Locator) -> str:
