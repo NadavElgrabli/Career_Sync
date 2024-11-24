@@ -1,17 +1,19 @@
+import os
+import asyncio
+from multiprocessing import Process
 from jobscraper.jobscraper.spiders.jobisjob import JobisjobSpider
 from jobscraper.jobscraper.spiders.monsterspider import MonsterspiderSpider
 from scrapy.crawler import CrawlerProcess
 from scrapy.utils.project import get_project_settings
 from jobscraper.indeed_scraper import IndeedJobScraper
-import os
-from multiprocessing import Process
 
 class Scraper:
     def __init__(self, **kwargs):
         settings_file_path = 'jobscraper.jobscraper.settings'
         os.environ.setdefault('SCRAPY_SETTINGS_MODULE', settings_file_path)
-        self.spiders = [JobisjobSpider, MonsterspiderSpider] 
+        # self.spiders = [JobisjobSpider, MonsterspiderSpider]
         self.job_preference = kwargs
+        self.spiders = [JobisjobSpider]
 
     def run_spider(self, spider):
         process = CrawlerProcess(get_project_settings())
@@ -34,4 +36,4 @@ class Scraper:
 
     def run_indeed_scraper(self):
         indeed_scraper = IndeedJobScraper(**self.job_preference)
-        indeed_scraper.fetch_page_content()
+        asyncio.run(indeed_scraper.fetch_page_content())

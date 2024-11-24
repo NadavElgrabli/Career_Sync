@@ -7,19 +7,14 @@ class MonsterspiderSpider(scrapy.Spider):
     
     def __init__(self, *args, **kwargs):
         super(MonsterspiderSpider, self).__init__(*args, **kwargs)
-        self.list_len = 18
+        
         self.job = kwargs.get('job', 'Full Stack').title()
-        self.type_of_job = str(kwargs.get('type_of_job', 'full_time')).upper().replace(' ', '_')
         self.location = kwargs.get('location', 'San Lorenzo').title()
         self.username = kwargs.get('username', '')
         self.kwargs = kwargs
         
-    
     def start_requests(self):
         url = "https://appsapi.monster.io/jobs-svx-service/v2/monster/search-jobs/samsearch/en-US?apikey=AE50QWejwK4J73X1y1uNqpWRr2PmKB3S"
-        for i in range(10):
-            print()
-        print(self.type_of_job)
         data = {
             "jobQuery": {
                 "query": self.job,
@@ -35,18 +30,18 @@ class MonsterspiderSpider(scrapy.Spider):
                 ]
             },
             "jobAdsRequest": {
-                "position": list(range(1, self.list_len + 1)),
+                "position": list(range(1, 10)),
                 "placement": {
                     "channel": "WEB",
                     "location": "JobSearchPage",
                     "property": "monster.com",
                     "type": "JOB_SEARCH",
                     "view": "SPLIT"
-                }
+                },
             },
             "fingerprintId": "z150c72f5ac7a9d8ce376f6b50376a99c",
-            "offset": self.list_len,
-            "pageSize": self.list_len,
+            "offset": 0,
+            "pageSize": 9,
             "searchId": "" ,
             "includeJobs": []
         }

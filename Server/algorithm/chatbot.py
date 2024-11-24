@@ -10,7 +10,6 @@ class Chatbot:
 
     def ask_question(self, message):
         
-
         doc = self.nlp(message)
         
         if 'job' not in self.user_data:

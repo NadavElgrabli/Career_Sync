@@ -59,7 +59,8 @@ ROBOTSTXT_OBEY = False
 # See https://docs.scrapy.org/en/latest/topics/downloader-middleware.html
 DOWNLOADER_MIDDLEWARES = {
     #  "jobscraper.middlewares.JobscraperDownloaderMiddleware": 543,
-     "jobscraper.jobscraper.middlewares.ScrapeOpsFakeBrowserHeaderAgentMiddleware": 400
+   
+   "jobscraper.jobscraper.middlewares.ScrapeOpsFakeBrowserHeaderAgentMiddleware": 400
 }
 
 # Enable or disable extensions
@@ -100,3 +101,9 @@ ITEM_PIPELINES = {
 REQUEST_FINGERPRINTER_IMPLEMENTATION = "2.7"
 TWISTED_REACTOR = "twisted.internet.asyncioreactor.AsyncioSelectorReactor"
 FEED_EXPORT_ENCODING = "utf-8"
+
+ROTATING_PROXY_LIST = [
+   '91.92.155.207:3128'
+   '68.178.168.41:80',
+   '3.127.62.252:80',
+]
