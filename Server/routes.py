@@ -64,6 +64,7 @@ need to add token warper need to check fisrt the client side how he send data
 '''
 
 @app.route('/chat', methods=['POST'])
+@token_required
 def chat():
     try:
         data = request.json
@@ -82,6 +83,7 @@ def chat():
 
 
 @app.route('/jobs',methods=['POST'])
+@token_required
 def get_jobs():
     
     data = request.json
@@ -99,6 +101,7 @@ def get_jobs():
     
 
 @app.route('/jobs/<id>', methods=['PUT'])
+@token_required
 def change_job_applied_status(id):
     data = request.get_json()
     if not data:
@@ -122,6 +125,7 @@ def change_job_applied_status(id):
         return jsonify({"error": "Failed to update job","job":job}), 500
 
 @app.route('/jobs/<id>', methods=['POST'])
+@token_required
 def delete_job_from_user(id):
     
     data = request.get_json()

@@ -12,7 +12,7 @@ def handle_chat_request(data, chatbot : Chatbot):
             chatbot.reset_chat()
             bot_response = "Hello! Welcome to Career Sync. What job are you looking for?"
         elif user_message == "nadav":
-            bot_response = "DONE {'job': 'web developer', 'location': 'new york', 'job_type': 'full time', 'job_preference': 'onsite', 'experience': '1', 'degree': True, 'degree_field': 'computer science'}"
+            bot_response = "DONE {'job': 'web developer', 'location': 'new york', 'job_type': 'full time', 'job_preference': 'onsite', 'experience': '1', 'degree': False, 'degree_field': ''}"
         else:
             bot_response = chatbot.ask_question(user_message)
         

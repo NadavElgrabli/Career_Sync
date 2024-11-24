@@ -94,6 +94,8 @@ def calculate_experience_score(experience_required, candidate_experience):
         return candidate_experience / experience_required
 
 def calculate_degree_score(degree_fields_required, candidate_degree_field):
+    if not candidate_degree_field :
+        return 0.5
     candidate_degree_field = candidate_degree_field.lower()
     degree_fields_required = [field.lower() for field in degree_fields_required]
     if not degree_fields_required:
