@@ -36,6 +36,7 @@ class IndeedJobScraper:
             page = await browser.new_page()
 
             await page.goto(self.url)
+            page.wait_for_load_state("networkidle")
             job_cards = await page.locator("td.resultContent").all()
             prev_title = ""
             time.sleep(1)
