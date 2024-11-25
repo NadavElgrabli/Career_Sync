@@ -43,7 +43,6 @@ class JobisjobSpider(scrapy.Spider):
         url = urljoin(response.url, raw_url) if raw_url else response.url
         description_element = response.css('div#description_text').get()
         if (not description_element):
-            print("*******************wow wowowowowowo")
             return
         description = re.sub(r'\s+', ' ', description_element.strip()).lstrip('\n ')
         

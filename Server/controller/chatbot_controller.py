@@ -1,6 +1,8 @@
 import ast
+from utils import update_last_search
 from jobscraper.run_scraper import Scraper
 from algorithm.chatbot import Chatbot
+from db import db
 
 def handle_chat_request(data, chatbot : Chatbot):
     try:
@@ -31,6 +33,8 @@ def start_crawling(cleaned_response,username):
     
     job_preference_dic = ast.literal_eval(cleaned_response)
     job_preference_dic["username"] = username
+    
+    update_last_search(username,job_preference_dic)
     
     scraper = Scraper(**job_preference_dic)
     scraper.run_spiders()

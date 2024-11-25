@@ -1,9 +1,10 @@
 from flask import jsonify, request, Blueprint,session
+from jobscraper.run_scraper import Scraper
 from middleware.auth_middleware import token_required
 from controller.chatbot_controller import handle_chat_request
 from algorithm.chatbot import Chatbot
 from token_utils import generate_token
-from utils import get_job_from_user, get_user_jobs, insert_new_user, login_user, remove_job_from_user_db, update_job_in_user
+from utils import get_job_from_user, get_user, get_user_jobs, insert_new_user, login_user, remove_job_from_user_db, update_job_in_user
 from flask_cors import CORS, cross_origin
 app = Blueprint('routes', __name__)
 CORS(app)
@@ -144,4 +145,17 @@ def delete_job_from_user(id):
     else:
         return jsonify({"message": "Failed to delete the job"}), 500
 
+@app.route('/user/newjobs', methods=['GET'])
+@token_required
+def get_new_jobs():
+    user = get_user(request.user)
     
+    try:
+        last_search = user['last_search']
+        scraper = Scraper(**last_search)
+        scraper.run_spiders()
+        print(1)
+        return jsonify({"message": "UPDATE successfully"}), 200
+    except:
+        print("bad bad 111111111111111")
+        return jsonify({"message": "UPDATE ERROR"}), 500

@@ -15,6 +15,7 @@ export class CareersPageComponent implements OnInit {
   jobs!: UserJob[];
   filteredJobs!: UserJob[];
   filterOption: string = 'all';
+  loading: boolean = false;
 
   constructor(
     private sessionService: SessionService,
@@ -23,6 +24,10 @@ export class CareersPageComponent implements OnInit {
 
   ngOnInit(): void {
     this.user = this.sessionService.getUserFromSession();
+    this.get_jobs()
+  }
+
+  get_jobs(): void {
     this.httpService
       .post<any>('jobs', { username: this.user.username })
       .subscribe((response) => {
@@ -39,6 +44,20 @@ export class CareersPageComponent implements OnInit {
     } else {
       this.filteredJobs = [...this.jobs];
     }
+  }
+
+  newJobSearch(): void {
+    this.loading = true;
+    this.httpService.get('user/newjobs').subscribe(
+      () => {
+        this.get_jobs();
+        this.loading = false;
+      },
+      (error) => {
+        console.error(`Error:`, error);
+        this.loading = false;
+      }
+    );
   }
 
   removeJob(job_id: string): void {

@@ -36,20 +36,19 @@ class IndeedJobScraper:
             page = await browser.new_page()
 
             await page.goto(self.url)
-            page.wait_for_load_state("networkidle")
             job_cards = await page.locator("td.resultContent").all()
             prev_title = ""
-            time.sleep(1)
+            time.sleep(2)
             for count, job_card in enumerate(job_cards):
                 if count >= self.max_jobs:
                     break
 
-                await job_card.scroll_into_view_if_needed(timeout=5000)
+                await job_card.scroll_into_view_if_needed(timeout=3000)
                 await job_card.click()
                 job = page.locator("div.jobsearch-RightPane")
                 try:
                     await job.wait_for(state='visible', timeout=2000)
-                    await job.locator("h2.jobsearch-JobInfoHeader-title").wait_for(state='visible', timeout=5000)
+                    await job.locator("h2.jobsearch-JobInfoHeader-title").wait_for(state='visible', timeout=2000)
                 except Exception as e:
                     print(f"Failed to load job details for job card {count}: {e}")
                     break
