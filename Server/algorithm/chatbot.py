@@ -59,7 +59,8 @@ class Chatbot:
                 if self.user_data['degree'] == True:
                     return "Could you please specify your field of study?"
                 else:
-                    return "Thank you! Let's move forward with the next step."
+                    self.user_data['degree_field'] = ''
+                    return f"DONE {self.user_data}" 
             else:
                 return "I couldn't determine if you have a degree. Could you please provide a clear answer?"
 
@@ -71,8 +72,6 @@ class Chatbot:
                     return f"DONE {self.user_data}"
                 else:
                     return "I couldn't identify your field of study. Could you please provide a specific field?"
-            
-        return f"DONE {self.user_data}" #TODO: Delete - For Debug
 
     
     def extract_job(self, doc):
@@ -244,5 +243,5 @@ class Chatbot:
             elif ((token.pos_ == "PROPN" or token.pos_ == "NOUN") and (token.dep_ == "pobj" or token.dep_ == "ROOT") and\
                 (token.text != "degree")):
                 return token.text
-        return "No degree filed found"
+        return "No degree field found"
     

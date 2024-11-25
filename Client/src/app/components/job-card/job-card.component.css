@@ -1,9 +1,6 @@
 .job-card {
   background-color: #ffffff;
-  border: 1px solid #e0e0e0;
-  border-radius: 8px;
   padding: 20px;
-  margin-bottom: 20px;
   position: relative;
 }
 
@@ -78,7 +75,7 @@
 }
 
 .apply-now-btn {
-  background-color: #2196f3;
+  background-color: #6c63ff;
   border: none;
   color: #ffffff;
   padding: 10px 20px;
@@ -92,16 +89,15 @@
 }
 
 .apply-now-btn:hover:not(.applied) {
-  background-color: #1976d2;
+  background-color: #6c63ff;
 }
-
 
 .applied-checkbox {
   margin-left: 10px;
   cursor: pointer;
   width: 18px;
   height: 18px;
-  accent-color: #007bff; 
+  accent-color: #6c63ff; 
   transform: scale(1.2); 
 }
 

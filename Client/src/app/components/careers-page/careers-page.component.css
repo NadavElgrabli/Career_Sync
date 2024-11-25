@@ -141,7 +141,7 @@
 }
 
 .filter-container select:focus {
-  border-color: #007bff;
+  border-color: #6c63ff;
 }
 
 @media (max-width: 768px) {
@@ -156,7 +156,7 @@
 }
 
 .search_btn {
-  background-color: #4caf50; 
+  background-color: #6c63ff; 
   color: white; 
   border: none; 
   padding: 10px 20px;
@@ -171,12 +171,12 @@
 }
 
 .search_btn:hover {
-  background-color: #45a049; 
+  background-color: #6c63ff; 
   transform: scale(1.05); 
 }
 
 .search_btn:active {
-  background-color: #3e8e41; 
+  background-color: #6c63ff;
   transform: scale(0.98); 
 }
 
@@ -184,8 +184,6 @@
   outline: none; 
   box-shadow: 0 0 5px rgba(0, 128, 0, 0.8); 
 }
-
-
 
 .loading-overlay {
     position: absolute;
@@ -209,7 +207,7 @@
   .spinner {
     margin: 0 auto 20px auto;
     border: 8px solid #f3f3f3; 
-    border-top: 8px solid #3498db; 
+    border-top: 8px solid #6c63ff;
     border-radius: 50%;
     width: 60px;
     height: 60px;
@@ -220,6 +218,3 @@
     0% { transform: rotate(0deg); }
     100% { transform: rotate(360deg); }
   }
-  
- 
-  

@@ -14,6 +14,9 @@ export class ChatComponent implements OnInit {
   messages: Msg[] = [];
   newMessage: string = '';
   user!: User;
+  progress: number = 0;
+  timerActive: boolean = false;
+  timerDuration: number = 8000;
 
   constructor(
     private httpService: HttpService,
@@ -23,7 +26,7 @@ export class ChatComponent implements OnInit {
 
   ngOnInit(): void {
     this.user = this.sessionService.getUserFromSession();
-    this.httpService.post<any>('chat', { message: "start", username: this.user.username  }).subscribe(response => {
+    this.httpService.post<any>('chat', { message: "start", username: this.user.username }).subscribe(response => {
       const botMessage: Msg = { text: response.response, sender: 'bot', username: this.user.username };
       this.messages.push(botMessage);
     });
@@ -41,23 +44,43 @@ export class ChatComponent implements OnInit {
         username: this.user.username
       };
       this.messages.push(userMessage);
-  
+
       this.httpService.post<any>('chat', { message: userMessage.text, username: this.user.username }).subscribe(response => {
         const botMessage: Msg = {
           text: response.response,
           sender: 'bot',
           username: this.user.username
         };
-        if (botMessage.text.includes('DONE')) {
-          this.router.navigate(['/careers-page']);
-        }
+
         this.messages.push(botMessage);
+
+        if (botMessage.text.includes('Thank you!')) {
+          this.startTimer();
+        }
       });
-  
+
       this.newMessage = '';
     }
   }
-  
+
+  startTimer() {
+    this.timerActive = true;
+    this.progress = 0;
+    const interval = 100;
+    const steps = this.timerDuration / interval;
+    let currentStep = 0;
+
+    const timer = setInterval(() => {
+      currentStep++;
+      this.progress = (currentStep / steps) * 100;
+
+      if (currentStep >= steps) {
+        clearInterval(timer);
+        this.router.navigate(['/careers-page']);
+        this.timerActive = false;
+      }
+    }, interval);
+  }
 
   isUserMessage(message: Msg): boolean {
     return message.sender === 'user';

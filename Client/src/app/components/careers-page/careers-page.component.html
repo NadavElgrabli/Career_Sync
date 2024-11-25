@@ -3,6 +3,7 @@
       <header class="career-header">
         <h1>Careers</h1>
         <div class="filter-container">
+          <button type="button" class="search_btn" (click)="newJobSearch()">Quick Seach</button>
           <label for="filter">Filter:</label>
           <select id="filter" [(ngModel)]="filterOption" (change)="filterJobs()">
             <option value="all">All</option>
@@ -11,8 +12,6 @@
             
           </select>
         </div>
-        <button type="button" class="search_btn" (click)="newJobSearch()">Quick Seach</button>
-        
       </header>
 
       <div *ngIf="loading" class="loading-overlay">
