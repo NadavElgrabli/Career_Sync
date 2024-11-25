@@ -103,6 +103,15 @@ def remove_job_from_user_db(username, job_id):
     else:
         return False
 
+def update_last_search(username:str, job_preference_dic ):
+    result = db.users.update_one(
+        {"username": username,},
+        {"$set": {"last_search": job_preference_dic}}
+    )
+    if result.modified_count > 0:
+        return True  
+    else:
+        return False
 
 def update_job_in_user(username, job):
     """
