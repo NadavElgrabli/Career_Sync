@@ -10,6 +10,8 @@
   </div>
 
   <h3 class="job-title">{{ job.job.title }}</h3>
+  <h4 class="company-name">{{ job.job.organization }}</h4>
+  
 
   <button class="remove-job-btn" (click)="onRemoveJob()">Remove Job</button>
 
@@ -17,6 +19,7 @@
     <span class="tag">{{ job.job.location }}</span>
     <span class="tag">{{ job.job.job_type }}</span>
     <span class="tag">{{ job.job.job_preference }}</span>
+
   </div>
 
 
