@@ -10,7 +10,7 @@ import asyncio
 class IndeedJobScraper:
 
     def __init__(self, **kwargs):
-        self.max_jobs = kwargs.get('max_jobs', 5)
+        self.max_jobs = kwargs.get('max_jobs', 10)
         self.headless = kwargs.get('headless', False)
         self.job = str(kwargs.get("job")).replace(' ', '+')
         self.location = str(kwargs.get('location', 'San Lorenzo')).title().replace(" ", "+")

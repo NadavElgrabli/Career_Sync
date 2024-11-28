@@ -1,12 +1,9 @@
 import ast
-from concurrent.futures import ThreadPoolExecutor
 from utils import update_last_search
 from jobscraper.run_scraper import Scraper
 from algorithm.chatbot import Chatbot
 from db import db
 
-# Thread pool executor for running tasks in the background
-executor = ThreadPoolExecutor()
 
 def handle_chat_request(data, chatbot : Chatbot):
     try:
@@ -24,10 +21,7 @@ def handle_chat_request(data, chatbot : Chatbot):
         
         if 'DONE' in bot_response:
             cleaned_response = bot_response.replace('DONE', '').strip()
-
-            # Start the crawler in the background
-            executor.submit(start_crawling, cleaned_response, username)
-
+            start_crawling(cleaned_response, username)
             bot_response = "Thank you! Let's move forward with the next step."
             return bot_response
         

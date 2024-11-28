@@ -1,31 +1,39 @@
 <div class="chat-page">
-    <div *ngIf="isLoggedIn(); else notLoggedIn" class="chat-container">
-      <div class="chat-header">
-        <h2>Chat with Career Sync</h2>
-      </div>
-      <div class="chat-messages">
-        <div *ngFor="let message of messages" 
-             [ngClass]="{'chat-message-user': isUserMessage(message), 'chat-message-bot': isBotMessage(message)}" 
-             class="chat-message">
-          {{ message.text }}
-        </div>
-      </div>
-  
-      <!-- Progress Bar (Only shown when timerActive is true) -->
-      <div *ngIf="timerActive" class="progress-bar-container">
-        <div class="progress-bar" [style.width.%]="progress"></div>
-      </div>
-  
-      <div class="chat-input-container">
-        <input type="text" [(ngModel)]="newMessage" class="chat-input" placeholder="Type your message..." (keydown.enter)="sendMessage()">
-        <button class="send-button" (click)="sendMessage()">Send</button>
+  <div *ngIf="isLoggedIn(); else notLoggedIn" class="chat-container">
+    <div class="chat-header">
+      <h2>Chat with Career Sync</h2>
+    </div>
+    <div class="chat-messages">
+      <div
+        *ngFor="let message of messages"
+        [ngClass]="{
+          'chat-message-user': isUserMessage(message),
+          'chat-message-bot': isBotMessage(message)
+        }"
+        class="chat-message"
+      >
+        {{ message.text }}
       </div>
     </div>
-  
-    <ng-template #notLoggedIn>
-      <div class="chat-unavailable">
-        <p>Chat is unavailable. Please <a routerLink="/sign-in">sign in</a> to access the chat.</p>
-      </div>
-    </ng-template>
+
+    <div class="chat-input-container">
+      <input
+        type="text"
+        [(ngModel)]="newMessage"
+        class="chat-input"
+        placeholder="Type your message..."
+        (keydown.enter)="sendMessage()"
+      />
+      <button class="send-button" (click)="sendMessage()">Send</button>
+    </div>
   </div>
-  
+
+  <ng-template #notLoggedIn>
+    <div class="chat-unavailable">
+      <p>
+        Chat is unavailable. Please <a routerLink="/sign-in">sign in</a> to
+        access the chat.
+      </p>
+    </div>
+  </ng-template>
+</div>
