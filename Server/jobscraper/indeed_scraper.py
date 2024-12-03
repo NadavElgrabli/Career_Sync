@@ -5,11 +5,14 @@ from playwright.async_api import async_playwright, Locator
 import re
 import pymongo
 from controller.job_score import calculate_total_score
+from controller.job_field_extraction import extract_experience, extract_work_preference
 import asyncio
+
 
 class IndeedJobScraper:
 
     def __init__(self, **kwargs):
+        self.max_try = 5
         self.max_jobs = kwargs.get('max_jobs', 10)
         self.headless = kwargs.get('headless', False)
         self.job = str(kwargs.get("job")).replace(' ', '+')
@@ -30,15 +33,15 @@ class IndeedJobScraper:
         self.job_collection = self.db[self.mongo_job_collection]
         self.user_collection = self.db['users']
 
-    async def fetch_page_content(self):
+    async def run_search(self):
         async with async_playwright() as p:
             browser = await p.chromium.launch(headless=self.headless)
             page = await browser.new_page()
 
             await page.goto(self.url)
+            time.sleep(2)
             job_cards = await page.locator("td.resultContent").all()
             prev_title = ""
-            time.sleep(2)
             for count, job_card in enumerate(job_cards):
                 if count >= self.max_jobs:
                     break
@@ -51,7 +54,7 @@ class IndeedJobScraper:
                     await job.locator("h2.jobsearch-JobInfoHeader-title").wait_for(state='visible', timeout=2000)
                 except Exception as e:
                     print(f"Failed to load job details for job card {count}: {e}")
-                    break
+                    return False
 
                 job_dic = await self.parse_job(job, prev_title)
                 if job_dic.get('url','') == '' :
@@ -60,6 +63,18 @@ class IndeedJobScraper:
                 prev_title = job_dic.get('title', '')
 
             await browser.close()
+            return True
+        
+    async def fetch_page_content(self):
+        is_finish = False
+
+        while (not is_finish) and (self.max_try > 0):
+            self.max_try -= 1
+            is_finish = await self.run_search()
+            if is_finish:
+                break
+
+        
 
     async def parse_job(self, job: Locator, last_job_title: str):
         title_element = job.locator("h2.jobsearch-JobInfoHeader-title")
@@ -75,8 +90,8 @@ class IndeedJobScraper:
         organization = await self.get_job_organization(job)
         description = await self.get_job_description(job)
         lower_description = description.lower()
-        job_preference = self.extract_work_preference(lower_description)
-        experience = self.extract_experience(lower_description)
+        job_preference = extract_work_preference(lower_description)
+        experience = extract_experience(lower_description)
         job_dic = {
             'title': title,
             'job_type': job_type,
@@ -130,16 +145,6 @@ class IndeedJobScraper:
         organization_text = await organization_element.inner_text()
         return organization_text
 
-    def extract_work_preference(self, description):
-        if re.search(r'\b(remote|work from home|telecommute|fully remote|anywhere)\b', description):
-            return 'Remote'
-        elif re.search(r'\b(on-site|on site|office-based|in-office|in office)\b', description):
-            return 'Onsite'
-        elif re.search(r'\b(hybrid|flexible work|partially remote)\b', description):
-            return 'Hybrid'
-        else:
-            return 'Onsite'
-
     def extract_degree_fields(self, description):
         pattern = r"(?:bachelor's|master's|phd|doctorate)?\s*(?:degree)?\s*(?:in|of)\s+([\w\s&\-,]+)"
         matches = re.findall(pattern, description)
@@ -148,13 +153,6 @@ class IndeedJobScraper:
             return fields
         else:
             return []
-
-    def extract_experience(self, description):
-        matches = re.findall(r'(\d+)\+?\s+years? of experience', description)
-        if matches:
-            return int(matches[0])
-        else:
-            return None
 
     def remove_char(self, string: str, char_to_remove: str, count=1):
         char_to_remove = "-"

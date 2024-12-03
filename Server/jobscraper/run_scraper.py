@@ -11,9 +11,9 @@ class Scraper:
     def __init__(self, **kwargs):
         settings_file_path = 'jobscraper.jobscraper.settings'
         os.environ.setdefault('SCRAPY_SETTINGS_MODULE', settings_file_path)
-        # self.spiders = [JobisjobSpider, MonsterspiderSpider]
+        self.spiders = [JobisjobSpider, MonsterspiderSpider]
         self.job_preference = kwargs
-        self.spiders = [JobisjobSpider]
+        
 
     def run_spider(self, spider):
         process = CrawlerProcess(get_project_settings())

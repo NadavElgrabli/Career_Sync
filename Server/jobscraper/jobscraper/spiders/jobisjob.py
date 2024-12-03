@@ -12,7 +12,7 @@ class JobisjobSpider(scrapy.Spider):
         self.job = kwargs.get('job', 'Full Stack').title().replace(" ", "+")
         self.location = kwargs.get('location', 'San Lorenzo').title().replace(" ", "+")
         self.username = kwargs.get('username', '')
-        self.max_job_search = 10
+        self.max_job_search = 2
         self.jobs_scraped = 0
         self.kwargs = kwargs
         
