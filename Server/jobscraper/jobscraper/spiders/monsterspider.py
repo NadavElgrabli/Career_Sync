@@ -38,6 +38,7 @@ class MonsterspiderSpider(scrapy.Spider):
                     "type": "JOB_SEARCH",
                     "view": "SPLIT"
                 },
+                "providerType" : "TSEARCH_NO_AUCTION",
             },
             "fingerprintId": "z150c72f5ac7a9d8ce376f6b50376a99c",
             "offset": 0,

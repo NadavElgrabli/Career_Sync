@@ -1,24 +1,8 @@
-import re
+from controller.job_field_extraction import find_degree_fields
 
 
 
-def extract_degree_fields(description):
-    
-    pattern = r"(?:bachelor's|master's|phd|doctorate)?\s*(?:degree)?\s*(?:in|of)\s+([\w\s&\-,]+)"
-    matches = re.findall(pattern, description.lower())
-    if matches:
-       
-        fields = []
-        for match in matches:
-          
-            subfields = re.split(r',|\bor\b', match)
-            for field in subfields:
-                field = field.strip().strip('.').strip(',')
-                if field:
-                    fields.append(field)
-        return fields
-    else:
-        return []  
+ 
 
 def calculate_total_score(candidate_profile, job_data):
 
@@ -36,7 +20,7 @@ def calculate_total_score(candidate_profile, job_data):
     description = str(job_data.get('description', '')).lower()
     job_preference = job_data.get('job_preference', '')
     experience_required = job_data.get('experience', None)
-    degree_fields_required = extract_degree_fields(description)
+    degree_fields_required = find_degree_fields(description)
     
     
     location_score = calculate_location_score(location, candidate_profile.get("location"))
@@ -94,8 +78,10 @@ def calculate_experience_score(experience_required, candidate_experience):
         return candidate_experience / experience_required
 
 def calculate_degree_score(degree_fields_required, candidate_degree_field):
+    if len(degree_fields_required) == 0 :
+        return 1
     if not candidate_degree_field :
-        return 0.5
+        return 0
     candidate_degree_field = candidate_degree_field.lower()
     degree_fields_required = [field.lower() for field in degree_fields_required]
     if not degree_fields_required:
@@ -112,7 +98,7 @@ def calculate_degree_score(degree_fields_required, candidate_degree_field):
             score = len(common_words) / len(field_words)
             scores.append(score)
         max_score = max(scores) if scores else 0
-        return max_score if max_score > 0.5 else 0.5
+        return max_score
     
     
 def main():
