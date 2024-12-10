@@ -1,9 +1,6 @@
 from controller.job_field_extraction import find_degree_fields
 
 
-
- 
-
 def calculate_total_score(candidate_profile, job_data):
 
     weights = {

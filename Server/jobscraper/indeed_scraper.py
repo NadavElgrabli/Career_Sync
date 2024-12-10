@@ -40,16 +40,23 @@ class IndeedJobScraper:
 
             await page.goto(self.url)
             time.sleep(2)
+            
+            session = await page.context.new_cdp_session(page)
+            window_info = await session.send("Browser.getWindowForTarget")
+            window_id = window_info["windowId"]
+            await session.send("Browser.setWindowBounds", {
+                "windowId": window_id,
+                "bounds": {"windowState": "minimized"}
+            })
+
             job_cards = await page.locator("td.resultContent").all()
             prev_title = ""
             for count, job_card in enumerate(job_cards):
                 if count >= self.max_jobs:
                     break
-
-                await job_card.scroll_into_view_if_needed(timeout=3000)
-                await job_card.click()
-                job = page.locator("div.jobsearch-RightPane")
                 try:
+                    await job_card.click()
+                    job = page.locator("div.jobsearch-RightPane")
                     await job.wait_for(state='visible', timeout=2000)
                     await job.locator("h2.jobsearch-JobInfoHeader-title").wait_for(state='visible', timeout=2000)
                 except Exception as e:
@@ -64,6 +71,7 @@ class IndeedJobScraper:
 
             await browser.close()
             return True
+
         
     async def fetch_page_content(self):
         is_finish = False
