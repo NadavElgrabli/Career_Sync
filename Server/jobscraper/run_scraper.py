@@ -13,7 +13,7 @@ class Scraper:
         os.environ.setdefault('SCRAPY_SETTINGS_MODULE', settings_file_path)
         self.spiders = [JobisjobSpider, MonsterspiderSpider]
         self.job_preference = kwargs
-        self.timeout = 20
+        self.timeout = 30
         
 
     def run_spider(self, spider):
