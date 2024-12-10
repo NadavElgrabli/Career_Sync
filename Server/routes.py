@@ -154,7 +154,6 @@ def get_new_jobs():
         last_search = user['last_search']
         scraper = Scraper(**last_search)
         scraper.run_spiders()
-        print(1)
         return jsonify({"message": "UPDATE successfully"}), 200
     except:
         print("bad bad 111111111111111")
